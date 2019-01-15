@@ -1,0 +1,18 @@
+Questions for Lisa
+
+1. How many Engineers and AI researchers are at Zest?
+
+2. Idea: for customers, give them a report of derivatives of score w.r.t. each
+input data point.
+
+3. How do you collect training data for the model (both financial / behavioral /
+social) and resulting payback behavior data?  Is there an easy way to follow up with
+approved or declined individuals, to re-train the model?
+
+4. What skills are you most looking for for this position?
+
+5. Can you describe the existing AI software?  And, something about how they want to
+improve it?  And how it needs to be maintained?
+
+  
+ 

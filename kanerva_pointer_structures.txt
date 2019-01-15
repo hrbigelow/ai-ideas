@@ -1,0 +1,98 @@
+One of the ideas in the Kanerva memory is a very basic one - that the essence
+of human memory is a bunch of directed pairwise associations between patterns.
+This is one type of structure that exists in ordinary computer programming too
+- just a simple pointer.  But, ordinarily, the location of the pointer (its
+  address, L) and the contents of the pointer (C, an address in memory) have no
+meaning other than their correspondence.  In other words, if you had an entire
+collection of pointers in memory forming some directed graph like structure),
+you could move the pointer at L to some free location M, and, for every pointer
+pointing to L, update its contents to M, then you'd preserve the graph
+structure.  And, ordinarily, a programmer would not care one bit whether this
+has happened, because we regard addresses not to have any specific meaning
+except in relation to structures in memory.
+
+But, they *could*.  There is nothing preventing a programmer from incorporating
+the actual values of the addresses into the semantics of a computer program.  I
+can't think of a good example of why this would be useful - at the very least,
+you'd need to incorporate control over address allocation in order to make use
+of it.
+
+Going back to Kanerva memory, we have the same situation as a collection of
+pointers, except that now, the addresses have meaning to the control system
+(the system that is directing the reading and writing of this memory).  And,
+the space of possible addresses is huge.  It's not that the brain needs all
+that space - if you consider the number of memories that it stores, this is a
+tiny fraction of the total number of memories it could store.  Indeed, the
+addresses are generated as states of the control system, which is not capable
+of reaching all possible states in the lifetime of an individual. 
+
+Going a little deeper, I am trying to envision how such a pointer-writing
+system would be implemented.  Clearly, it needs to communicate to the memory
+system both an address A and contents C to store.  It seems inevitable that the
+memory system would need these two to be on dedicated lines, since the
+connectivity of the circuitry is basically fixed.
+
+Initially, when I was thinking of how to implement a linked list using a
+pointer chain, say, with patterns [A, B, C, D, ...], I thought that the
+controller would need to produce pattern A on its address line and B on its
+content line.  Then, it would need to produce B on its address line and C on
+its content line.  But, I thought, how does a fixed circuit produce exactly the
+same pattern (B) on two different sets of lines?  First off, doing so
+implies a choice of a one-to-one mapping between the two lines, which is not
+a problem in itself.  What is a problem is, how could a memory controller
+actually do that?  There isn't really any biological structure that has a
+massive one-to-one correspondence like that.
+
+But, let's assume it solves this problem somehow, and the controller has
+the following logical functions:
+
+1. Init(P, S) # initialize the controller with previous and current states
+
+2. Transition(P, S, I) # P <- S, S <- f(S, I).  Calculates a new current state based
+   on the current state and input I.  Updates previous state.
+
+3. Write(P, S) # writes S at P, creating an association
+
+4. Read(S) # reads contents at S
+
+
+So, the writing of a pointer chain under this model would look like this:
+
+1. Assume the controller has state (A, B), given in the format (<prev_state>,
+<cur_state>).
+
+1. Init(A, B)
+2. Write(A, B)
+3. Transition(A, B, I) # C is the new current state
+4. Write(B, C) 
+5. Transition(B, C, I') # D is the new current state
+6. Write(C, D)
+
+
+The problem with this is that there is no plausible way for pattern B to show
+up on the content lines, and later show up on the address lines.  But, there is
+another way that doesn't require this, and it is logically the same.  Assume
+that the sequence [A, B, C, D] is [A, B = f(A, I(1)), C = f(B, I(2)), D = f(C,
+I(3))] fThe Transition function is now:
+
+2. Transition(P, S, I) # P <- q(S), S <- f(S, I)
+
+1. Init(A, B)   # (A, B)
+2. Write(A, B)
+3. Transition(A, B, I(1)) # (q(B), C)
+4. Write(q(B), C)
+5. Transition(q(B), C, I(2)) # (q(C), D)
+6. Write(q(C), D)
+
+So, now, the memory has three associations: A->B, q(B)->C, q(C)->D.  What if we want
+to follow this chain?
+
+How does all of that work?
+
+But, then, I thought, this isn't really necessary.  As long as the memory can
+store some content B at an address A, and then read back B from A, it can also
+feed B back into the controller to alter its state somehow and compute
+new content.
+
+
+

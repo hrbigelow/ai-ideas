@@ -1,0 +1,12 @@
+Convolution-like Regularization in FC Layers
+
+Instead of a traditional convolution, use a fully connected layer.  Then, to
+promote locality of receptive field, introduce a regularization penalty proportional
+to a 2D gaussian around the output node for the incoming weights.
+
+Introduce a second, "weight-sharing" regularization penalty, that penalizes the weights
+from being different if they have the same physical grid position offset from one layer
+to the next. 
+
+
+

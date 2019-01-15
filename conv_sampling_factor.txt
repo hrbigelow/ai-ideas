@@ -1,0 +1,21 @@
+Non-integer sampling factors in convolutions.
+
+Ordinary convolutions (and transpose convolutions) make use of stride, which
+restricts the pattern of information to a 1/stride frequency of information.
+However, there is nothing stopping one from designing any sort of mask, though
+logically, it ought to be a repeating pattern.  Besides being repeating, any
+two patterns that, when repeated, form the same pattern that is just offset by
+phase is really the same pattern.  This is a symmetry group among the patterns.
+
+So, we could define a pattern's sampling factor as the fraction of True nodes
+in a mask over the total.  The period of repetition can still be known as the
+stride.   Importantly, this allows one to achieve arbitrary sampling factors.
+For instance, if one wanted to downsample by just 1%, you could have a stride
+100 pattern with 99 true.
+
+The problem with this is it is not symmetric with respect to phase.  How can we
+achieve phase symmetry in convolutions?  The paper I bookmarked seemed to have
+something of an answer to that.
+
+ 
+

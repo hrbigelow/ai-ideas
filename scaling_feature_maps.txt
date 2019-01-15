@@ -1,0 +1,20 @@
+Weight-sharing across different scales
+
+Several papers on CNNs implement weight-sharing across different scales, by
+first transforming the input image into different scales using some form of
+down-sampling, and then feeding all of these scaled images to the same
+convolutional filters.  Finally, they select the one that gives the biggest
+signal.
+
+One can do the same thing for rotations, or any other type of transformation
+(though I can't practically think of another). o
+
+I would just point out that one could do this with intermediate layers
+("feature maps") as well.  That is, don't scale the input *image*, but leave as-is,
+and then scale the result of the first convolution.
+
+The effect of this is that you don't burden the very simplest, pixel-level features with
+the task of training on different scales.  But, once they detect certain patterns, you
+then allow those patterns to be manifest at different scales. 
+
+

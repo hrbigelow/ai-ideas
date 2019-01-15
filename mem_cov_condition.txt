@@ -1,0 +1,53 @@
+I was pondering the interplay between three ML concepts.  To illustrate these,
+I'll choose the example of what I think must happen when a person listens to
+another person speaking.   
+
+The first concept is that of memory.  As the sound wave enters the ear, the
+patterns heard are processed in a way that extracts salient features, such as
+gender, age, emotional state, attractiveness, demeanor, physiological state.
+The recognition of each of these salient features must be due to the retrieval
+of memories.
+
+The second is the concept of equivariance.  Note that each of these salient
+features are of the equivariant type.  That is, the system has learned to
+extract these features in a way that will gradually vary with the input - e.g.
+the voice qualities of a person will gradually change with a person's age. 
+
+The third concept is that of conditioning.  As the sounds progress, the brain
+extracts these salient features.  But, once extracted, they serve as an online
+conditioner, affecting what we expect and how we interpret further sounds.
+This is a continuous interplay moment to moment of the comparison between
+extracted salient features in the past and the present.
+
+Separately from the above, let me lay out the problem of efficient recognition
+of patterns across factors of variation.  In vision, the problem is better
+known: how to have a model of an entity that doesn't vary by any of the
+quantities that its appearance varies by:  distance, lighting, view angle.  In
+speech, and phoneme recognition, it is that our models of phonemes and/or words
+can't vary by any of the variations that different speakers exhibit - because
+they all are speaking the "same" words potentially.
+
+So, for this to work, the recognition needs to work in such a way that the
+extracted features in one timeframe serve as conditioners for subsequent
+timeframes.  The conditioners (i.e. age, gender, overall demeanor, etc.) allow
+the system to recognize the invariant entities such as spoken words using the
+same circuitry regardless of the variation in the signal that the person's age,
+gender, demeanor cause.
+
+This idea has the same overall structure as Hinton's Capsule theory, but with
+an added component.  In the capsule theory, I believe, small parts of an image
+are recognized by small capsules, which then output a set of equivariant
+quantities.  Then, through a routing mechanism, subsets of these small parts
+are grouped together by the criterion that their equivariant quantities match,
+when interpreted by a candidate larger whole of which these are parts.   
+
+Are there feedback connections in the capsule setup?  I don't think so.  In
+other words, the inputs to a capsule in layer L depends only on inputs from
+lower layers.  Even if, after other interpretations are made in the image,
+which might in principle be useful as conditioners that would affect how
+the lower levels operate.
+
+
+
+
+

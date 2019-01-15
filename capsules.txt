@@ -1,0 +1,28 @@
+Hinton has introduced a new kind of "operation" that is needed.  He points out that
+the traditional computation of dot product between a weight vector and tensor
+of activations is a filter operation, and, you get the most activation when the
+two vectors are more similar (also, scaled by their norms).
+
+But, what he needs in order to make routing efficient is an efficient way to
+detect two similar sets of activations - that is, he has many groups of
+neurons.  Each group's activation pattern represents a pose.  And, the goal is
+to find a subset of capsules whose poses are similar.  Technically, what is
+being compared is the product of the lower level capsule's pose matrix with the
+upper-level capsule's something-or-other (the thing that expresses the
+upper-level capsule's knowledge of how that particular part fits into the
+whole).
+
+For example, if you have a face capsule, it contains a set of pose matrices
+that represent the relative positions and orientations of its components
+relative to each other.  These matrices may in fact be learned and stored in
+some "canonical" overall pose such as a face looking straight ahead (or some
+other pose).  None of this has to do with pixels though, so perhaps the
+knowledge stored in the face capsule is scale-agnostic (i.e. has nothing
+whatsoever to do with numbers of pixels).
+
+Now, here's the crux:  a lower level capsule for an eyeball will output a pose
+matrix, indicating the pose of the eyeball.  A second lower-level capsule will
+have detected another eyeball.  If both eyeballs are indeed part of the same
+face, then the pose matrices reported by the two capsules will, when each
+combined with the face capsule's sub-matrices, be the same, because the face
+  

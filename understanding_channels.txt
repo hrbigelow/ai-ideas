@@ -1,0 +1,108 @@
+What is the role of input and output channels in a layer?
+
+Network layers, at least in computer vision have a third dimension besides the
+two spatial dimensions.  This is the number of channels, and can be thought of as
+the embedding dimension of features.
+
+And, when you draw a node diagram showing two circles connected by a line with a "weight",
+each circle actually represents a vector of channel values, and the "weight" is actually a
+matrix of in_channels x out_channels.
+
+So, one question could be: in a convolutional filter consisting of an F x F grid of matrices,
+each IC x OC dimensions, how many "distinct patterns" can this filter be trained to recognize?
+
+I'm trying to understand this idea.  So, for instance, if IC = 1, OC = 1, then I would say the
+filter only can understand a single "pattern family", defined by the F x F scalar weights.
+
+If we had IC = 1, OC = 5, say, then I'd say the filter is really five separate,
+and unrelated filters that are simply stacked on top of one another.  Each can
+be understood exactly on the same footing as we understand just one filter.
+So, each individual filter is "looking" for a different pattern that it is
+maximally responsive to.  But, we can also view these individual filters as a
+basis, and the output channels as basis components.  If the shapes of each
+filter are sufficiently expressive and independent, then it may be that the
+component representation over the space of all training data receptive fields
+is projected into a relatively smooth space of output channels.  This property
+of "smoothness" seems a desirable one.
+
+From another perspective, consider just one input pattern and its resulting
+component representation.  It is indeed not actually a basis, since the
+dimensionality of the input pattern is in general larger than the output.  But,
+it may not necessarily be the case.  For instance, we could have a 3 x 3
+receptive field, and more than 9 output channels, so in that case, the weights
+might indeed be linearly independent.
+
+This leads to the question of whether it is desirable for the dimension of the
+span to be maximal.  Clearly, there would be no point to having two linearly
+dependent filters.  And, with random initialization of weights, it is extremely
+unlikely for any to start out linearly dependent.  Technically, at the weight
+level, linear dependence just means that there exists one matrix which can be
+expressed as a linear combination of other matrices.
+
+In any case, I think that if these matrices are indeed linearly independent,
+then there can only be at most N of them, where N is the number of elements in
+the matrix (the receptive field size).
+
+Is it also the case that the original pattern can be re-constructed as the
+component-wise linear combination of the individual filter weights?  Well, by
+the basis theorem, if the space of all patterns is of dimension N, and you
+produce N vectors in that space (which the weights themselves are), then every
+pattern can indeed be produced by a unique linear combination of the basis. 
+
+However, note that the output channel values, the way they are calculated, are
+NOT actually components.  If you have an input vector (or matrix, doesn't
+matter) and want to express it in terms of the basis, how do you find its
+components?  Well, if you had an orthonormal basis, then I think you *could*
+actually derive the components by taking the dot product of the component with
+the pattern.  But, geometrically, what is a dot product?  A dot product will be
+proportional to the length of both vectors.  You could "canonicalize" the
+situation by factoring out the vector norms of both vectors.  Then, look at the
+length of either vector projected against the other.  These lengths would be
+identical due to symmetry, and only depend on the angle.  So, I suppose I would
+say that the dot product is the product of length of one projection times the
+length of the vector being projected to.
+
+So, for an orthonormal basis, the dot product of the vector with each basis
+vector will equal the length of its projection along the basis direction, times
+the length of the basis vector (which is 1).  So, indeed, the dot product
+yields the component. 
+
+So, when the number of output channels exceeds the number of filter elements,
+it's possible that a subset of filter matrices forms a basis for the pattern
+space, and the patterns can thus be represented in the output channels.  In
+this case, there will be a linear subspace in component space which maps to the
+same pattern.  By "maps to", I mean that the dot product of components with
+filter weights results in the pattern.  Note that, in this case, even if the
+individual filter matrices are all normalized, the output components attained
+by taking the dot product will not in general result in a point in this linear
+subspace. 
+
+
+How to view multiple input channels
+
+With multiple input channels, we are now considering that the input pattern is
+
+
+
+ 
+
+
+
+
+What about the case where the number of elements in the receptive field is
+greater than the number of output channels?  In this case, even if the matrices
+are linearly independent, they can only span an OC-dimensional sub-space of the
+input pattern space.  If we were to generate a new pattern as the linear combination
+of output channel values with filter weights, it would in general not be the same
+as the  
+
+What about IC = 5, OC = 1?  In that case, the filter is fitting five individual patterns
+in the input, and then summarizing how well they match by just summing the output.  So, one
+pattern, say in input channel zero, might fit very well, and thus contribute a large value.
+Another pattern in a different channel would contribute another value.  So, we have a situation
+where the individual patterns in each channel could compensate for each other in producing
+the final output
+
+
+
+ 

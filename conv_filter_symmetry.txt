@@ -1,0 +1,26 @@
+Convolutional Filter Symmetry
+
+One peculiar aspect of a convolutional layer is that the weight sharing scheme
+can be interpreted two ways.
+
+The traditional way to interpret it is as follows:
+
+The weights are stored in the filter, and the filter is moved over the input.  The set of weights
+consists of all the weights between the nodes in the filter's receptive field, connecting them
+to a single output node.
+
+The weights consist of all of those which connect a single input to a "field of influence" in 
+the layer above.  This "filter" is moved over the input to contribute to the output.
+
+Both of these cases lead to the very same learning dynamics.
+
+Let's assume that we have a convolutional layer that does not change the sampling rate.
+That is, it has stride 1 and SAME padding.  So, the number of input nodes equals number of
+output nodes.
+
+In this case, it is possible for contiguous regions of the input to be mapped to
+spread out nodes (covering the same spatial extent) in the next layer, and so on, until
+only a few nodes in a later layer are activated in response to a large and complex
+receptive field from the input.
+
+

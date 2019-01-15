@@ -1,0 +1,85 @@
+At least with visual data, we already know that the underlying physical cause
+is embedded in a near-infinite manifold of varying scale.  In other words, for any
+image captured from the natural world, the patterns in the image can in principle
+be generated at any resolution higher or lower.  The physical surface of the
+objects depicted in the 2D plane of the image can be theoretically dotted with
+precise locations where each photon painting the image emanated from.  The spatial
+density of photons is random to varying degrees due to brightness, surface properties,
+and angle with respect to light source.
+
+All this means that, at one resolution, a single pixel in the resulting image would
+correspond to a patch of many pixels in a higher resolution image.
+
+Feature detectors in CNNs are designed to capture spatial patterns pixels in a contiguous
+patch of an image, called the filter's "receptive field".  Since a CNN presents every
+possible contiguous patch of the image to each filter, the filter has the opportunity
+to recognize its target if it appears anywhere in the image.  This accounts for
+spatial position as one factor of variation in image data.
+
+Would it be possible to architect a network in such a way that the same feature detector
+would light up in response to a pattern appearing at very different scales?
+
+In principle, it is possible.  But, in order to achieve this, there would need to be
+some circuitry in the network which "scanned" the input at different size scales, in the
+same way that a regular convolution "scans" the input at different positions.
+
+This is a harder problem, because for matrix-based filters, the different size scales
+have different sized inputs, which in general are not compatible with a dot-product operation
+of the filter.  One could imagine abstracting the elements of the filter as follows:
+
+1) at the lowest possible resolution, the elements of the filter "dock" with individual pixels.
+But, at higher resolutions, these elements will correspond in general with more abstract
+entities, although they ought to correspond with parts of the picture.  Perhaps, the same
+parts that the individual pixels would correspond if you created a zoom-continuity map.
+
+It's interesting to note that the dimensions of a single pixel (3 channels, 256 values per
+channel) have meaning in relation to each other.  In the same way, if we were to zoom in, and
+have a set of feature detectors that scan the matching region of a zoomed-in region to
+produce the same number of elements as there were pixels in the original region, then
+the hope is that the same filter could operate on these feature outputs as the original
+pixels, to produce the same excitation.
+
+There is the aspect that the pixels themselves have a relatively small
+dimensionality. However, this is easily remedied by a linear transformation
+that is one-to-one per pixel, but increases the number of dimensions to work with.
+
+For a pixel, there are 256**3 distinct values.  This could be increased first, and then a set
+of convolutions used to construct features.
+
+How would you enforce scale learning here?  Here is the proposal:
+
+1.  Start with a set of images that are labeled per pixel.  Generate images that are scaled
+versions of the original image in very fine degrees of zoom (1.0, 0.99, 0.99, ..., 0.10)
+and with appropriately ported mask values.
+
+2.  Design the CNN such that each successive layer "summarizes" at a very gradual rate, the same
+rate that the degrees of zoom manifest.  For instance, if the input is 1000x1000, the first layer
+will be 990 x 990.
+
+3.  Train the model so that the filter weights are shared in such a way that the filter that
+covers a particular patch of nodes in layer N 
+
+
+Overall, what we want is for the same filter weights to be updated any time we see a particular
+object in the input, no matter at what scale that object appears.  This is already the case
+for ordinary convolution filters, when an object appears at different *positions* in the input.
+But, now, we want the parameters to be tied together for data at different *scale* as well.
+
+Given the fact that filters have a fixed size receptive field, however, this means the
+filter must encounter the "object" at a higher, more summarized level within the network.
+
+And, it doesn't seem likely to me that a network with a discrete number of layers to represent
+gradations in scale is the way to go.  So, one question is:
+
+Is it possible to have a filter with a fixed cardinality receptive field be made to encounter
+the same object at different scales?  Is it even appropriate for such complex filters to
+appear at low levels in a network?
+
+Is there any other way?
+
+
+
+
+
+
+

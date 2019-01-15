@@ -1,0 +1,46 @@
+A consequence of a distributed memory
+
+Consider the following scenarios. In these scenarios, we consider pairs of
+experiences which happen in rapid succession, and the subject forms an
+assocation from the first to the second experience by storing the second
+experience at the location of the first, a la Kanerva. 
+
+I use P1, P2, P3 to indicate a set of similar patterns, and separately, Q1, Q2,
+Q3 a set of similar patterns.  In general, the P's are not similar to the Q's.
+
+
+Scenario 1:  Forming a new association between one experience and the one
+immediately following it.
+
+1. A person experiences P1, and then immediately following that, experiences P2.
+He forms an association between P1 and P2. [write content P2 at location P1]
+
+2. Some time later, he experiences P1 again, and it leads him to recall P2.
+[read uncorrupted content P2 from location P1]
+
+3. Immediately after this recollection, P3 occurs, which is very similar to P2.  Since it is
+unsurprising
+
+Consequence: 
+
+
+Scenario 2: Experiencing an unsurprising thing.
+
+3. He experiences P1, and recalls P2 [read from location P1, returning P2]
+
+4. Immediately after, he experiences P3, which is very similar to P2.  The
+similarity leads him to experience it as unsurprising. [compare the immediate
+experience with the recalled one, finding that they are similar]  
+
+
+Experiencing a totally surprising thing.
+
+5. He experiences P1, recalls P2 [read from location P1, returning P2]
+
+6. Immediately after, he experiences Q which is totally different than P2.
+This is completely surprising as to be almost nonsensical [compare P2 with Q,
+finding they are totally dissimilar]
+
+7. He forms this new association from P1 to Q [write content Q to location P1.  due to
+
+

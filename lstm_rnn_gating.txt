@@ -1,0 +1,45 @@
+In reading Alex Graves' thesis on RNNs, I now have a better understanding of
+LSTMs via RNNs, via MLPs.  So, now, the way I think of it is this:
+
+An MLP is already easy to understand:  just a fixed size input being mapped to
+a fixed sized output, through alternating affine transformations and a
+component-wise non-linearity.
+
+Then, an RNN can be thought of as a series of applications of the same MLP to
+each input, each time to produce an output.  The MLP itself has the same
+weights.  The only difference is that, additionally, the MLP receives another
+vector of inputs called its "state".  The state vector is like a memory of the
+past, in that after it gets combined with the input, and the component-wise
+non-linearity applied, that becomes the current state, which is then passed
+onto the next application of the MLP.
+
+It isn't the weights of the MLP that are changing, but the additional input.
+
+
+Now, an LSTM has this same basic "cross-like" structure, with hidden state in
+the middle, input at the bottom, output at the top, previous state to the left,
+and following state to the right.  However, there are now three gates added to
+the structure, one to each connection:  I->H, H->H, H->O.  The I->H gate is
+called the "input gate", and it acts to scale the components of the input
+vector through a component-wise multiply.  the H->O gate is called the "output
+gate", and, similarly, it scales components of the output vector.  Finally, the
+H->H gate is called the "forget gate".
+
+Now, this name is chosen to inspire the notion that the hidden state is a
+"memory" of sorts, and that multiplying by zero is an act of "forgetting".
+It's a loose analogy, since setting components to zero is not really the same
+as "forgetting", especially since if a memory is represented by some components
+being zero, then a zero valued gate will not alter it.  Nonetheless, a gate of
+all ones does indeed preserve everything, while a gate of all zeros pushes
+everything down to zero.  
+
+In any case, these gates all receive input from various sources, which
+determines what gates they output.
+
+I am wondering whether this gating is something like attention.  Also, I wonder
+whether this hidden state might be used in some more elaborate way with a
+larger memory. 
+
+
+Note that an LSTM "block" is dropped into the same role as an ordinary hidden
+unit in an RNN.  The LSTM block is the center of the cross.

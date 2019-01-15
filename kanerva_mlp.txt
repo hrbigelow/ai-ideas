@@ -1,0 +1,36 @@
+How might one implement a Kanerva memory as a two-layer perceptron?  The first
+set of nodes would be the input pattern which serves as the address.  The
+second (middle) set of nodes each would represent a hard location.  In the
+first layer of connections, each set of weights leading into an address neuron,
+together with its bias value, represent the address of the neuron and its
+response radius.  This also determines the set of addresses it will respond to.
+
+A few mathematical facts about this arrangement:
+
+1. The weights and bias logically define a hyperplane that separates the input.
+
+2. If we assume the input nodes have a bounded range of values (say [0, 1] or
+[-1, 1]), then the hyperplane separates the input space into two finite
+volumes.
+
+3. The notion of an "address" connotes a neuron that fires for the smaller of
+the two volumes, and when this space is only a small fraction of the total
+volume.
+
+4. A hyperplane equation wx + b = 0 and (w/|w|)x + b/|w| = 0 are equivalent.
+That is, we can scale all weights and the bias by any non-zero factor, and the
+resulting hyperplane will be the same.  Note, however, that if the neuron's
+output is processed with ReLU, then the output of the ReLU function will also
+be scaled.
+
+5. Under the Kanerva interpretation, a neuron has a specific address, and has a
+radius below which it fires.  Since the address is given as one of the corners
+of the discrete {0,1}^n space, and distance is Hamming distance, this implies
+that the direction vector defining the hyperplane is the one formed by the
+vector from the center of the hypercube to the address.
+
+6. Having defined the address and radius, we note that any pattern in the
+convex hull of the discrete hypercube patterns that activate it will also
+activate it.  (Indeed this is what it means to be in the
+
+

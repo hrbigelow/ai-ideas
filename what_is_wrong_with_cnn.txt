@@ -1,0 +1,12 @@
+Notes on "What is wrong with convolutional neural nets? "
+
+6:43: "I'm gonna take a Marrian perspective, and say that in order to
+understand the brain we need to understand what it is computing.  And I'm going
+to give you a reason why the brain needs to do this computation.  And I suggest
+this is what mini-columns are doing - a wild speculation - this is Marrian wild
+speculation, because it comes from the computation that needs to be done."
+
+26:37: Two types of equivariance.  This strikes me as somewhat clunky - I don't
+know why.
+
+

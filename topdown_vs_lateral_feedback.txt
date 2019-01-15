@@ -1,0 +1,31 @@
+This is just a simple note to point out that the notion of "feedback" is somewhat
+arbitrary.  We can think of it as going "down", but that is logically equivalent to
+other situations.
+
+The "down" sort of feedback traditionally might mean:
+
+1. collect information from a large part of the input
+2. compute some quantity from that information
+3. use the computed quantity as input for a computation
+   which uses a smaller part of the input.
+
+The reason this is called "down" is that, in image processing, it is the lower
+layers that have small receptive fields, and higher and higher layers integrate
+the output from these lower layers.  This means that, if we then use output
+from a higher layer to inform the processing in a lower layer, the information
+is flowing "down".
+
+Now, let's compare a different type of information flow, a MDRNN that processes
+an image.  In this case, we have information being distributed laterally.  In
+theory, this is more versatile than a top-down information flow, because it
+includes that as a possible flow, but others as well.  For instance,
+considering a multi-directional MDRNN, the LSTM state receives influence from
+the entire image.  Yet, at what point does the LSTM cell generate output?
+Something about this doesn't make sense.
+
+In any case, it seems like in principle, this lateral feedback also fits the
+description of "down", because if at any location in the image, the LSTM cell
+has integrated information from the rest of the image, then it fits this
+description.  The confusion I have is that I don't know how a BLSTM works (let
+alone a multi-directional MDLSTM works).  To be revisited.
+

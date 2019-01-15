@@ -1,0 +1,24 @@
+Getting away from pixel coordinates
+
+It seems a shortcoming and a conceptual mental block that CNN layers are always
+locked in to a rigid one-to-one coorespondence with spatial pixel coordinates.  After
+all, pixels themselves are an artificial construct; the underlying structure that gives
+rise to them is in a continuous space.
+
+Consider the problem of estimating the real valued radius and R^2 valued center
+coordinate of a circle, given an image of the circle in pixels.  Without some representation
+of the real space, a network wouldnt' have much chance of estimating this accurately.
+
+It's not clear to me whether this is just a conceptual problem or might have real
+ramifications to performance for some problems.
+
+The paper "Deep Parametric Continuous Convolutional Neural Networks" addresses this.  It
+replaces tensor-based convolutions (which implicitly are embedded in the pixel grid coordinate
+system) with a MLP that can take real-valued coordinates as *input* and output a real value
+representing a weight.  In this way, it can be used to convolve over an arbitrary space, not
+just a pixel grid.  In the paper, they use it to convolve over Lidar point-cloud data.  But,
+my interest in this is to convolve over an image, and to enable up- or down-sampling by
+non-integer factors.
+
+ 
+

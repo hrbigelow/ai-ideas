@@ -1,0 +1,26 @@
+This is a musing on how humans use memory.
+
+In the spirit of the idea of "The Remembered Present", I propose that the way
+we use memory is in a supervisory sense.  When we experience something through
+our senses, our encoding circuits calculate many different codes for different
+aspects of the experience, and our memory system associates these codes with
+each other in different ways, using one as an address, and the other as
+contents. 
+
+Let's consider one very simple use of memory - to compare the present situation
+to an expectation based on a memory.  If in the past, you experience a certain
+sequence of experiences, you would form a memory of that sequence of
+experiences.  If at a later time you then experience a very similar step in
+that sequence, it would be used to cue your memory for the next step in the
+sequence, and you then retrieve that memory as an expectation for what comes
+next.  This could serve as some sort of error signal.  The better your encoding
+of a situation, the more likely it will be that a sequence of such encodings is
+more predictable.  In the extreme case of a perfect encoding (in which you
+model everything perfectly well, you might have modeled the actual causal model
+for something and thus be able to perfectly predict the outcome.
+
+The important point here though is that, although nature herself doesn't repeat, a
+sequence of encodings of certain aspects may perfectly repeat, if it encodes the
+experiences in the right way.
+
+And, the recording of a 

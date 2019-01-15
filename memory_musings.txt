@@ -1,0 +1,62 @@
+Related to Kanerva, musings on the nature of memory
+
+After reading Kanerva, I began to question what really was the distinction
+between a "memory" system and a circuit that computes an encoding.
+
+Let's compare: 
+
+A memory is basically a function that you query with an address, and get a
+value back.  The value that you get back depends on the state of the memory,
+and that state can also be modified.  One can think of these modifications as
+updates to free parameters of the system.
+
+A circuit also is a function that you query and get a result back.  We don't
+normally think of the query as an address.  And, we don't think of the free
+parameters as the "contents" from which you read.  But, the free parameters
+serve the same purpose, which is to determine the relationship between the
+input and output of the function.
+
+What are some differences?  
+
+In the most extreme, absolute case, the memory "parameters" have only a
+localized effect on the relationship between the query and the output.  The
+query is an address, and only the parameters which are stored in one specific
+location, addressed by the query, affect the output.  And, the output is itself
+those parameters.  In a more general case, as Kanerva lays out, one can have a
+memory system with sparse, distance-based addressing.  In this system, the query
+is still an address, but instead of activating and accessing a single location,
+it activates all locations within a certain distance.
+
+The circuit could be viewed as a memory too - after all, it has learned
+something and stored that something in its parameters.  But, unlike a
+conventional random-access memory, the circuit is much more distributive in its
+patterms of activation.  Input patterns from the data distribution it was
+trained on are likely to activate a majority of first layer neurons.  Thus, a
+large fraction of weights will affect the output of the circuit, in the general
+case.
+
+
+How should we view the process of storing memories, as contrasted with the
+gradual updating of synaptic strengths?  After all, both processes are forms of
+learning from experience.
+
+Besides that, there isn't really any meaningful distinction between the
+external and internal.  For example, we say that we form a new memory if we
+observe something new in the world.  We also say we learn from the new
+observation, in the sense of fitting our perceptual functions.  Yet, these new
+experiences then propagate through the system, exposing internal circuits to
+new inputs, and they, too, must adjust.  So, in principle, we store memories
+not just of experiences, but of our own thoughts.
+
+Orthogonal to this, it may also be that there are memory systems that assist
+our subsystems in a way completely independent of awareness.  It is hard to
+think about this, because, by definition of being human, the only way we can
+conceptualize memory is through our awareness, simultaneously of our basic
+surroundings and of the discrepancy between what we observe and what we are
+thinking about.  The very experience of a memory seems to require awareness.
+
+Are memories subject to the principles of generalization?
+
+When we think of the general circuit that encodes some input, we say that it
+generalizes well if the model is builds is "similar" to the causal model that
+we as humans have derived for that domain.

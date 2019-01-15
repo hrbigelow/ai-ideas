@@ -1,0 +1,25 @@
+The notion of bounded space
+
+The space of all inputs for a neural system is bounded, since there is only a
+limited range of stimuli that a neuron is sensitive to.  At the periphery, our
+retinas can only handle brightness levels within a fixed range, and colors
+within a fixed range.  Our ears can only handle frequencies and amplitudes in
+fixed ranges.  The case is the same in every sense perception.
+
+In an ANN, it seems sensible to either artificially limit the range of
+activation values of neurons, or that this would naturally come out, given that
+the ranges of inputs are limited.
+
+So, given all of this, the picture that emerges is one of linear
+transformations or separating hyperplanes, but now, envisioned in
+hypercube-like bounded spaces.  This situation looks very different from
+separating hyperplanes over unbounded spaces.  When applied to a hypercube
+(whether hollow or filled or a discrete grid of points), a hyperplane clips off
+a corner of a hypercube. 
+
+The upshot is that, when considering a bounded space, a hyperplane divides the
+space into two differently sized volumes.  This is not the case with an
+unbounded space - in that case, every possible hyperplane divides the space
+into two infinite-volume spaces. 
+
+

@@ -1,0 +1,93 @@
+Thoughts after reading Kanerva
+
+Kanerva's central ideas are as follows:
+
+1.  Interpretation of a neuron as an address decoder.
+
+A neuron receives a set of excitatory and inhibitory inputs from a specific set
+of other neurons.  Each such input has a strength associated with it.  The
+neuron will fire if and only if the sum of these weighted inputs exceeds some
+threshold.  If the threshold is set to the sum of excitatory weights, it will
+only fire if the input pattern is precisely those neurons associated with the
+excitatory weights - in other words, the neuron's "address" is the binary
+vector with 1's for the excitatory weights and zeros for the inhibitory
+weights.  The input pattern is another vector, with ones for firing, and zeros
+for not firing.  The neuron then fires if this input vector is within a certain
+distance (Hamming distance) of the neuron's "address".
+
+
+2.  The patterns to be remembered are large vectors of information - the
+outputs of an encoding process.  The various encodings are invariant or
+equivariant to different degrees.  But in any case, this encoded space,
+generally, is what the memory is dealing with.  
+
+There are some other interrelated concepts:
+
+A. information as address vs. contents
+B. sparsity
+C. interference of memories
+
+The very notion of a memory, by definition, implies some form of query-target,
+or pattern completion functionality.  It implies the functions of reading
+previously written contents, and writing new contents.  It implies also that
+each reading or writing event is independent of the ones that came before it.
+Independent writing means that the precise way in which the memory is altered
+by a given writing event depends on the memory state at the moment of writing,
+and on the data present in the writing queue during the write operation.
+Similarly, during reading, the data returned depends on the contents of the
+query pattern, and the state of the memory at the moment of the reading.
+Previous reads or writes only have an effect on the current operation through
+the memory state.
+
+In ordinary random-access computer memory, the query is always an address, and
+the target is the contents written or read.  Both forms of information (address
+and contents) are expressed as binary numbers.  But, the range of valid
+addresses is quite small compared to the range of things that a memory can
+store.
+
+In contrast, Kanerva's model generalizes this notion somewhat.  The first
+generalization is the notion of addressing.  In traditional memory, an exact
+address, (a binary word), queries all addressing circuits in parallel, and
+exactly one of them is activated, allowing reading or writing to a single cell
+in the substrate of the memory.  In Kanerva's model, the addressing circuits
+are implemented with threshold-based neurons.  Each circuit has a hypersphere
+of addresses as its "receptive field" - the set of patterns for which it is
+activated (fires).  This sphere grows as the threshold of the neuron decreases.
+The total space of possible addresses is astronomically large, since there are
+many input fibers.  But, there are only a limited number of addressing neurons,
+with random addresses sprinkled about the space.  They end up covering the
+whole space by increasing their receptive fields.  
+
+This also implies that more than one addressing neuron may respond to the same
+address - i.e.  two different neurons may have overlapping receptive fields.
+
+There is a key feature of this type of memory.  Because of the fact that a whole
+sphere's worth of patterns can stimulate the same neuron, this means that
+pairs of inputs 
+
+
+Temporal aspects
+
+Also there is the question of discrete vs. continuous memory operations.  A
+discrete operation would be one in which, during a "tight" time window, the
+pattern of fire/no-fire across all mossy fibers constitutes *the* pattern which
+is used as either a query or information to write.  Note that, for this to be
+well-defined, the time window has to be short enough that it is possible to
+designate each neuron as having fired or not.
+
+In the continuous memory model, there is no synchronization mechanism, and
+memories are retrieved and/or stored continuously.  Still, there needs to be
+some window of integration - otherwise, how would the "input pattern" be
+defined?  So, the continuous model is better called a non-synchronized discrete
+model, in which there is no signal that demarcates a given memory for reading
+or writing.  But, just that the next available operation presents itself and
+the memory responds.  However, it does seem, just based on the connectivity of
+circuits, that firing patterns are naturally temporally bound relative to each
+other.
+
+
+
+It must be that the total information vector that could be used as a query, or
+used as a write pattern, is not scalable the way the number of memories 
+
+

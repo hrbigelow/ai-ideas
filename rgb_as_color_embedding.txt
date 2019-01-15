@@ -1,0 +1,10 @@
+RGB, CMYK seen as "color embedding".
+
+It is instructive to think of the RGB vector as a very effective
+embedding space for colors.  This has a few nice consequences.  First,
+it is an embedding in the similarity sense - a mapping to a space which places
+"similar" colors closer together in the space.
+
+Second, when thinking about convolutions, the input pixels are not anything special - they
+are on the same conceptual level as a feature map, and the channels have the same semantic
+quality as the channels R, G, and B.
