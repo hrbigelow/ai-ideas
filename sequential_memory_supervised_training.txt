@@ -32,24 +32,27 @@ patterns to output patterns.  Examples would include labeling and things
 involving actions.  So, unlike the encoder, a good decoder might very well
 map volumes of code2 space to single outputs.
 
+At the moment, I don't know exactly what effect having an approximate-match
+memory might have on an MLP.
+
+TRAINING
+
+Ordinarily, performing supervised training of an MLP requires repeated exposure
+to each training example, and it could be done in minibatch SGD.  In this
+setup, at each step, the individual errors from each example in the minibatch
+are averaged, and weight updates applied throughout the layers.
+
+What about the Kanerva MLP?  In this case, we want to simultaneously train
+the encoder, decoder, and store code1 -> code2 associations.  The problem
+is that there is no way to generate code2 in this regime.  We need a separate
 
 
 
 
-With approximate retrieval associative memory, a new input pattern gives a new
-code1, and the memory will return *something* similar to whatever is stored
-associated with a previously existing code1.  If we assume that the code1 space
-is moderately high dimensional, and the input is very high dimensional, then,
-when presented with a new input pattern, the encoder, trained on N input samples,
-couldn't reasonably be expected to produce one of the N code1's.  It would produce
-something new.
 
 
 
-
-
-
-
+MULTIPLE ENCODERS AND DECODERS
 
 One might object with a counterexample:  suppose I have an encoding process for
 facial recognition and I notice that one or more components of my encoding
