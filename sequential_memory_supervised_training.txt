@@ -1,0 +1,104 @@
+Supervised training using associative memory
+
+
+Note that the quality or utility of an encoding function is not a well defined
+concept.  It becomes well defined only when a decoding function is also
+defined. Thus the chain: input -> code -> output is defined, and the input to
+output mapping can be then evaluated for its quality against a gold standard of
+input -> output pairings.  In a simple MLP, this is achieved through SGD on
+labeled data.
+
+For reasons explained below, I adopt a slightly more elaborate scheme of input
+-> code1 -> code2 -> output, with code1 -> code2 link being implemented by an
+associative memory.  An MLP with more than three layers of nodes can be
+interpreted this way.  I assume also that the memory works in such a way that
+querying with code1' (nearby to code1) will retrieve a code2' (nearby code2).
+
+But, let's suppose that we have a conventional hash table that stores the
+code1/code2 associations as key/value pairs.  In other words, the code1 ->
+code2 part of the chain has no ability to generalize beyond the training data.
+So, in order for the entire chain to produce any output on a new input, the
+encoder would need to learn to intercalate input space, *and* to produce
+exactly one of the existing N code1's from the training data.
+
+For an encoder to map entire volumes of a high-dimensional input space to the
+same code would likely be bad, because it would mean that it was not faithfully
+carrying equivariant properties through into the code.  So, I'll assume a
+"good" encoder will not do this.
+
+What about the decoder?  Typically, the output space will be small, at least in
+this setting where we are not considering recurrence, only mapping individual
+patterns to output patterns.  Examples would include labeling and things
+involving actions.  So, unlike the encoder, a good decoder might very well
+map volumes of code2 space to single outputs.
+
+
+
+
+
+With approximate retrieval associative memory, a new input pattern gives a new
+code1, and the memory will return *something* similar to whatever is stored
+associated with a previously existing code1.  If we assume that the code1 space
+is moderately high dimensional, and the input is very high dimensional, then,
+when presented with a new input pattern, the encoder, trained on N input samples,
+couldn't reasonably be expected to produce one of the N code1's.  It would produce
+something new.
+
+
+
+
+
+
+
+
+One might object with a counterexample:  suppose I have an encoding process for
+facial recognition and I notice that one or more components of my encoding
+process seem to track facial identity (i.e. identifies different faces) while
+another smoothly varies with head attitude.  I have seemingly evaluated my
+encoding process without a decoder.  Or have I?  No, implicitly in this problem
+statement, I presented raw images which were faces, but in even speaking of
+"facial identity" or "head attitude", I've implicitly assigned a matching
+output pattern to the input.  And, the simple act of inspecting the encoding
+and looking for individual elements that seem to track these things *is* a form
+of (simple) decoding.  It could well have been a more complex relationship
+between the encoding vector and my implicit labels. 
+
+But, where is the code2 in this scenario?  We seem to have instead defined the
+chain: input -> code1 -> output.   Is a code2 necessary?  Consider the
+situation in which there are say, three input types and three output types, and
+we would like to learn nine separate models, one for each combination of input
+type and output type.
+
+We could naively do supervised training on each of the nine pairings.
+Intuitively this seems wasteful on both ends, however.  It seems that a better
+approach would be to learn one encoder, one decoder, and record the pairwise
+associations between input and output in an associative memory.
+
+At first glance, it would work like this:
+
+1. Specify one of the three input data types, choose appropriate encoder
+2. Specify one of the three output data types, choose appropriate decoder
+3. The encoder calculates code1 from input
+2. code1 queries memory, retrieving code2
+3. The decoder decodes code2 into the output format
+
+But, there is a problem.  Once we have encoded the input, there is no way to
+inform the memory which type of association we want to retrieve, but the
+associative memory is only capable of storing one association per vector.
+What to do?  The simplest 
+
+
+ 
+
+In an artificial model, how might one use this in a real situation?  Here is a proposal:
+
+1. Assume *some* level of pretraining, which we assume comes to us through evolution.
+
+2. Assume an encoder/decoder architecture, although the decoder need not decode to the
+same form as the encoder.
+
+Loop:
+
+A. Present the input part of a datum to the encoder to generate an encoding.
+B. Feed the encoding to the decoder, generating a prospective output.
+C. 

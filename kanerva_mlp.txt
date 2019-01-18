@@ -31,6 +31,21 @@ vector from the center of the hypercube to the address.
 
 6. Having defined the address and radius, we note that any pattern in the
 convex hull of the discrete hypercube patterns that activate it will also
-activate it.  (Indeed this is what it means to be in the
+activate it.  (Indeed this is part of what a separating hyperplane does).
+
+
+
+Now, what to do about Kanerva's counters?  In Kanerva's original formulation,
+when a memory is stored, the following happens:
+
+1. The memory system receives two inputs: an address pattern and a content pattern, not
+   necessarily the same dimensionality (and perhaps not even in the same base field)
+
+2. Each output neuron corresponds to a "bit" in the output pattern.
+
+3. Each outgoing weight from an addressing neuron corresponds to a counter.
+The total set of outgoing weights that connect to a given output node (bit)
+might 
+
 
 

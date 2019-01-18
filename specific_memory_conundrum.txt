@@ -1,0 +1,47 @@
+A strange thought regarding memory usage
+
+The use of memories, especially, sequential memories, as a way to
+supervise or monitor a new unfolding experience, seems to generate an odd
+contradiction in machine learning principles.
+
+In a very general sense, every model will be trained on some finite sampling
+from a training distribution.  It is understood that, while the particular
+details of the samples themselves don't matter, the overall set of training
+data expresses the shape of the data distribution in its many dimensions.
+
+According to this principle, we would regard any memorization of the input data
+to be a kind of over-fitting.  We don't expect that the fine details of each
+training datum will ever be repeated, and so memorizing them has no use, and is
+wasteful statistically.
+
+Meanwhile, the theory of Predictive Coding holds that a sequence of memories
+(which can be at any of a variety of levels of abstraction) can serve to
+confirm or refute the Brain's own internal process of predicting from a current
+state what might come next.
+
+Clearly, the ability to predict is essential for survival, and it might be the
+only thing that defines what we regard as a "correct" model - after all, if a
+model is correct, it will predict better than any model that is not "correct".
+And, there doesn't seem to be any more fundamental property of a model than
+correctness of prediction.
+
+But, there is a bit of a conundrum here.  The data distribution really is quite
+"clumpy" in the real world.  Things tend to repeat, not least because we humans
+make it so.  So, often, our currently generated encodings are indeed retrieving
+memories that are extremely well matched.
+
+This is a very different situation than one in which you train a model on a
+sampling from a data distribution, and do not retain any specific memories from
+that data distribution, but rather, let the model generalize from the data and
+encode its knowledge diffusely in its parameters.  
+
+The question is, if a model *does* store sequences of encodings coming from
+specific data, and it draws on these specifically at later times, does this
+constitute some form of overfitting or over-generalization?  But, if the world
+of humans really is very clumpy in its structure, why not do this?  In what
+context does using specific memories to form an expectation overfitting?
+
+It seems to me that there is no notion yet in these machine learning models of
+an explicit memory, or how to think about it from the
+overfitting/generalization perspective.
+
