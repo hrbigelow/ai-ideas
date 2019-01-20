@@ -1,0 +1,40 @@
+THE ROUTING PROBLEM
+
+What is "the routing problem"?  What problem does a network router solve?  A
+network router receives packets of information.  For each packet, the router
+reads the packet's destination address, and then sends the packet down one of
+its output channels.
+
+There are a few important differences between this form of routing and that in
+a neural network.  First, the output channel connected to a router is serial.
+The information packet consists of a binary vector, and it is communicated down
+the channel in serial, meaning that there is only one line that can carry
+state, and the sequence of zeros and ones must be carried one at a time, one
+after another.
+
+In the network router context, the N bits (positions 0 to N-1) in a network
+packet must be transmitted at specific times 0 through N-1.  It is the timing 
+which allows the receiver to decode the bit sequence back into the bit pattern.
+
+In a neural network, I believe, a packet of information is not carried as a
+temporal sequence of firings or non-firings along a single neuron.  Rather,
+there is a designated group of neurons, each one having its own fixed identity
+in the representation of a pattern within a family of patterns.  The
+transmission of this pattern is accomplished at a particular time window by the
+fire/no-fire pattern of this group of neurons within that time window.
+
+In the router context, the packet is transmitted along one among several lines.
+A firm decision is made: the circuitry of the router analyzes the address pattern
+and somehow, without affecting any physical connections, sends the information
+down one of the lines.
+
+But, in the neural network context, what would be the equivalent "decision" or
+routing that happens in response to inspecting an incoming pattern?  It doesn't
+actually seem possible to have an N pattern, and then some mechanism for routing
+it down one of two or more sets of neurons.
+
+The addressing paradigm is an interesting thing to ponder.  In that case, the
+input pattern activates a specific subset of addressing neurons.  This could be
+seen as a kind of routing decision.
+
+

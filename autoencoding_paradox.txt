@@ -1,0 +1,93 @@
+How to think about human models
+
+What are some of the different processes going on when a human listens to another
+human speaking?  What about when a person speaks?
+
+While listening:
+
+1. A circuit for transforming cochlea signals into a semantic representation
+a. raw frequency / amplitude spectra transformed into prospective phonemes
+b. those phoneme representation used as input to a word / sentence model
+   to construct a most likely interpretation of the heard signals
+c. constructing a model of motor movements matching the inferred phoneme sounds
+
+While speaking (option 1):
+
+Forward:
+
+1. meaning code to word code 
+2. word code to phoneme code 
+3. phoneme code to aural code
+4. aural code to motor code
+
+Backward:
+
+5. Raw sound to phoneme code
+6. Raw sound to motor code
+7. Raw sound to proprioceptive / physical code
+8. motor code to phoneme code
+9. phoneme code to word / sentence code
+10. word / sentence code to  
+
+
+This whole analysis has a few precepts, which I will state here:
+
+1. By "code", I mean a neural representation of an experiential aspect of an
+entity.  For example, a "phoneme" is an entity, but it has experiential
+aspects.
+
+1) its sounds when it is pronounced
+2) its meaning in relation to words
+3) motor movements needed to pronounce it
+4) proprioceptive sensations when pronouncing it
+
+Right now it is unclear to me how to describe what is meant by a particular
+kind of code.  At the very top-level, one could say that the experiential
+realms are divided by the senses - obviously a visual experience is completely
+separate from an auditory one, which is separate from taste, smell, touch,
+proprioception.
+
+Within a single "sense", one might try to divide further.  Though, at least for
+vision, hearing, taste and smell, there don't seem to be meaningful ways to
+divide these further.  The sensations collectively referred to as "touch" do
+seem to be meaningfully divisible.  Proprioception (body position), sense of
+balance, pressure, state of muscle contractions all seem like separate
+"channels" or senses that don't mix with one another like the many experiences
+of hearing or vision seem to be unified.  The sensations on the surface of the
+skin are also significantly different from the other physical sensations.
+
+So, any code to represent the spaces of these many experiences will also
+be separate for each.  By "separate", I mean that:
+
+1) circuitry that converts inputs from one of these senses is
+a separate and independent from that of another of the senses.
+
+2) the resulting code derived from one of these senses only has meaning
+relative to other points in the code space of that same sense.  There is no
+direct relationship between the code space of one sense and that of another.
+This is not to say that another separate circuit can learn relationships
+between these codes.  Just that the type of relationship that we are concerned
+with here is in learning the shape of a mapping between the sensory input and
+the code.
+
+Are there other ways to subdivide encodings?  It depends what you mean.  For
+example, circuitry to recognize auditory patterns like phonemes is likely
+capable of also recognizing melodies and other sounds, and it is probabily
+implemented as some sort of associative memory.
+
+Let's assume that both phoneme patterns and melodies are recognized as
+encodings in the same encoding space.  In addition to recognizing phonemes
+while listening to speech, one might also recognize the quality or affect of a
+person's voice.  These are other independent patterns which undoubtedly must be
+stored and retrieved by an associative memory to derive meaning.  Is it
+reasonable to expect that the same circuitry that derives phoneme encodings
+also derives voice-quality encodings?
+
+1. Read the sentence, forming a code
+2. Write the sentence
+3. As it is being written, read what is written, evaluating again.
+
+Or, in the parallel situation of hearing and speaking:
+
+
+

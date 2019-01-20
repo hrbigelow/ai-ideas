@@ -35,7 +35,7 @@ map volumes of code2 space to single outputs.
 At the moment, I don't know exactly what effect having an approximate-match
 memory might have on an MLP.
 
-TRAINING
+TRAINING IDEAS
 
 Ordinarily, performing supervised training of an MLP requires repeated exposure
 to each training example, and it could be done in minibatch SGD.  In this
@@ -45,7 +45,52 @@ are averaged, and weight updates applied throughout the layers.
 What about the Kanerva MLP?  In this case, we want to simultaneously train
 the encoder, decoder, and store code1 -> code2 associations.  The problem
 is that there is no way to generate code2 in this regime.  We need a separate
+encoder for the target.
 
+But, note that this is not inconsistent with what a human would do.  Consider:
+if a human were faced with the task of captioning pictures, and he were given
+captioned pictures as a training set, and uncaptioned pictures as a test set,
+the process of learning would involve:
+
+1. learn how to encode pictures (to see and interpret)
+2. learn how to encode captions (to read words)
+3. having both encodings, create associations from one to the other.
+4. learn how to decode caption codes (to speak)
+
+Then, during inference time:
+
+1. interpret the image
+2. retrieve an associated word encoding
+3. speak the encoding
+
+
+
+In any case, in training a feed-forward model using back-propagation, the
+paradoxical thing is that the target caption is not actually interpreted.
+Instead, the caption produced by the speaking model is compared with the target
+caption, and an error signal is produced.
+
+This is actually quite suboptimal.  The fact that the caption is of a modest
+dimension somewhat disguises the problem.  If we consider the inverse activity,
+drawing a picture from a caption, the problem becomes crystal clear.
+
+In that problem, we provide input captions "labeled" with target pictures.
+During test time, we are just given captions and asked to generate pictures.
+It is immediately clear that it would be impossible to train such a model,
+because the high dimension of the pictures makes it impossible to define a
+sensible loss function.  But, why?  Besides the high dimensionality, what
+is different about this problem than the reverse problem?
+
+
+TRAINING ALGORITHM
+
+The model consists of an image encoder and language encoder, a Kanerva-type
+memory, a language decoder.  The two codes are fed into the Kanerva memory during
+training to create an association.
+
+
+
+ 
 
 
 
@@ -61,7 +106,7 @@ another smoothly varies with head attitude.  I have seemingly evaluated my
 encoding process without a decoder.  Or have I?  No, implicitly in this problem
 statement, I presented raw images which were faces, but in even speaking of
 "facial identity" or "head attitude", I've implicitly assigned a matching
-output pattern to the input.  And, the simple act of inspecting the encoding
+utput pattern to the input.  And, the simple act of inspecting the encoding
 and looking for individual elements that seem to track these things *is* a form
 of (simple) decoding.  It could well have been a more complex relationship
 between the encoding vector and my implicit labels. 
