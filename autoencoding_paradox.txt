@@ -83,6 +83,10 @@ stored and retrieved by an associative memory to derive meaning.  Is it
 reasonable to expect that the same circuitry that derives phoneme encodings
 also derives voice-quality encodings?
 
+On the one hand, it's hard to understand how it could NOT be the case, because
+ALL auditory information must come through the same channel (well, from one
+ear, anyway).  
+
 1. Read the sentence, forming a code
 2. Write the sentence
 3. As it is being written, read what is written, evaluating again.

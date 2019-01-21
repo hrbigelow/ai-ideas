@@ -38,3 +38,5 @@ input pattern activates a specific subset of addressing neurons.  This could be
 seen as a kind of routing decision.
 
 
+
+
