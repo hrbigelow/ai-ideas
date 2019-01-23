@@ -81,12 +81,68 @@ because the high dimension of the pictures makes it impossible to define a
 sensible loss function.  But, why?  Besides the high dimensionality, what
 is different about this problem than the reverse problem?
 
+LOW DIMENSIONAL OBSERVABLES DISGUISE OVERFITTING
+
+A simple loss function, such as edit distance, can give a reasonable
+measure of difference between, say, the "correct" caption and the inferred
+one.  It seems somewhat reasonable to apply a loss function in this way
+to train a captioning program.
+
+But, if we think about the reverse problem, drawing a picture to go with a
+caption, it seems almost non-sensical to try to apply a loss function to
+measure the difference between the "correct" picture and the generated picture.
+The pictures are such high dimensional objects that it is hard to see how one
+could get a meaningful distance measure.  The only real distance measure that
+makes sense is not one done in pixel space, but in a semantic code space.
+
+But, this now reveals the more subtle problem in the original captioning
+program: the "reasonable" loss function that measures edit distance between
+captions isn't reasonable at all - it is completely inappropriate to measure
+edit distance between sentences.  After all, we are interested in *meaning*,
+and that can only be measured in code space, not in the observable space.
+
+The situation is exactly the same as with the drawing problem.
+
+If we do train the captioning program in this way, we are overfitting the model
+to produce overly specific captions.  Each picture is arbitrarily given one
+specifically worded caption, when a few others would have done just fine.  What
+we really want the model to learn isn't that one specific caption for each
+specific picture - but a family of captions that all mean the same thing.  And,
+essentially, the way to achieve this is to train on code space.
+
+The only way to achieve this training regime, though, is to simultaneously
+train an encoder and a decoder for the output domain.
+
+SEMANTICS OF THE TRANSFORMATION PROBLEM LOSS CONCEPT
+
+If we are in a situation in which multiple labels are all valid for a given
+input datum, then it is an abuse of the principle of supervised learning to use
+only a subset of those labels for supervision.  One could suggest augmenting
+the training set by adding in those labels and training on the augmented set.
+But, the problem gets impractical when the labels are from a very
+high-dimensional space, because it is impossible to enumerate all valid labels.
+
+A sensible alternative is to co-train an encoder and decoder for the label
+domain.  Then, the decoder generates a potential output, and in order to
+compare it with the provided output label, we use the encoder to re-encode
+both, and compare them using euclidean distance.  
+
+
+
+
 
 TRAINING ALGORITHM
 
 The model consists of an image encoder and language encoder, a Kanerva-type
-memory, a language decoder.  The two codes are fed into the Kanerva memory during
-training to create an association.
+memory, a language decoder.  The two codes are fed into the Kanerva memory
+during training to create an association.  Later, image code query retrieves
+the associated language code.
+
+The problem contains a subproblem within it, which is how to train the image
+model (encoder and decoder).  There are a few issues and ideas.
+
+
+
 
 
 

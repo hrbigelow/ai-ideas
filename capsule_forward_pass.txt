@@ -1,0 +1,50 @@
+MY UNDERSTANDING OF CAPSULE FORWARD PASS
+
+Hinton's Capsule idea is a generalization of a neuron.  In the idea of a
+neuron, we have:
+
+1. The neuron's level of activation represents the likelihood of presence of a
+certain "feature" that it is trained to detect.  
+
+2. The receptive field of the neuron (a set of lower level neurons) represent
+the features that must be present or absent from the feature this neuron
+represents.  If the lower-level neuron represents a feature that must be
+present, its weight will be large and posiitive.  If it represents one that
+must be absent, its weight will be large and negative.  If the feature identity
+is unaffected by presence or absence of the particular sub-feature, the weight
+will be small in magnitude.
+
+The idea of capsules extends this idea from not just presence/absence, but
+requirement of spatial relationship.  So, instead of a single scalar weight
+connecting sub-capsules to a capsule, there is the scalar weight, plus a 4x4
+matrix of weights representing the pose relationship.
+
+Secondly, during activation, the capsule outputs both a scalar weight and a 4x4
+matrix.  The scalar represents the likelihood of presence of the represented
+entity, just like in ordinary neurons and their features.  The 4x4 matrix
+represents the pose the capsule thinks the entity is in.
+
+COMPARING FORWARD PASS OF ORDINARY PERCEPTRONS VS CAPSULES
+
+With ordinary perceptrons, the forward pass consists of a straight-forward
+affine transform followed by element-wise non-linearity.  At least in computer
+vision with a CNN, each neuron has a receptive field which is a fixed set of
+neurons, and the contributions of each neuron to the activation depend only on
+the connection weight and the individual source neuron's activation.
+
+The contributions are additive, and so there is a smooth dependence of the
+output on the activations of each input.  In max pooling, the situation is
+different.  Instead of summing *all* weighted contributions of incoming
+neurons, one ignores all but the one with the maximum value in spatially
+adjacent groups. What is a good interpretation of this?
+
+In short, it is the belief that, at the given level of complexity, it is
+expected that there is only a limited density of features that can be present
+in an image, and so, it seems like it is expressing a prior on the spatial
+density of features.
+
+After this max pooling layer, there might be another convolutional layer.  What
+is odd is the idea that each neuron in this layer has its fixed receptive field
+as well.  Because of the multiplicity of input and output channels, we may be
+dealing with a distributed representation of features.  
+

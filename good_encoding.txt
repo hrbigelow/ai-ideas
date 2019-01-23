@@ -1,0 +1,45 @@
+WHAT MAKES A GOOD ENCODING?
+
+What makes a good encoding?  I was thinking about auto-encoders. An autoencoder
+is a model that pairs an encoder with a decoder, connected by a central
+encoding.  The model is trained to reproduce the input that it is given.  In
+this way, it avoids the necessity for labeled training data.  It seemed like a
+special sort of model when I first learned about it, because it isn't learning
+a "relationship" between one type of data and another - it is learning internal
+structure of the data with itself.
+
+But, then, there are variations of so-called autoencoders that are really *not*
+autoencoders.  The "denoising" autoencoder takes a noised-up version of the
+data as input, and learns to output the original.  This is no longer
+technically an autoencoder, because it is learning a relationship between two
+albeit similar but technically different pieces of data.  What is odd to
+realize is that now, one can imagine the autoencoder as just one model along a
+continuum of models that encode an input data, and then decode it to something
+else.  And, the strict autoencoder just happens to decode it to the very same
+thing as it received.
+
+But, if we describe a regular model that performs a transformation A -> code ->
+B as "learning a relationship between A and B", it doesn't really make sense to
+describe a transformation A -> code -> A as "learning a relationship between A
+and A", because really, what it is doing is "learning a code for A in a limited
+codespace that allows it to reconstruct A".  It is learning to represent
+salient features of A and throw out extraneous features of A.
+
+But, then, what is the model A -> code -> B learning?  In light of the above,
+one could describe it differently, as "learning to represent salient features
+of A which are important for reconstructing B"
+
+This raises the question:  Consider the space of all practical models that you
+might want to build, and now consider the set of those models taking the same
+input data type.  Is there some ideal code that would perform well for each of
+these models?
+
+There might be a few possibilities:
+
+1. There is a different encoding for each one, which is task dependent.
+
+2. There is a "mother code" which captures sufficient information for every
+task in the set of tasks.
+
+
+

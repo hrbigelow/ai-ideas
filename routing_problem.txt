@@ -34,9 +34,18 @@ actually seem possible to have an N pattern, and then some mechanism for routing
 it down one of two or more sets of neurons.
 
 The addressing paradigm is an interesting thing to ponder.  In that case, the
-input pattern activates a specific subset of addressing neurons.  This could be
-seen as a kind of routing decision.
+input pattern activates a specific subset of addressing neurons.  This allows
+access to a specific subset of weight space in the next layer, effectively
+sequestering off most of the rest of the layer.  This is the mechanism by which
+different pieces of information are retrieved without interference.
 
+However, unlike an internet router, this mechanism has no payload.  The entire
+firing pattern consists of the address.  There is no way to specify a
+spur-of-the-moment payload along with the address, which can then be sent to
+one or another channel based on that address.
+
+Is this connected at all to the idea of training based on a kanerva-type
+memory?
 
 
 

@@ -1,0 +1,90 @@
+DISTRIBUTED REPRESENTATIONS, PART-WHOLE RELATIONSHIPS AND ROUTING
+
+THE DOT-PRODUCT SIMILARITY MEASURE FOR REPRESENTING A PATTERN OF EMBEDDING
+VECTORS.
+
+I was thinking about how convolutional filters work together to slowly
+build up the recognition of complex objects.  The particular interpretation
+of the input and output channels that I use is the following:
+
+The filter consists of a local spatial patch of units, each with a
+position-specific matrix.  We can think of the filter decomposed by output
+channels.  Each output channel recognizes a separate archtypal pattern of
+vectors.  Each unit in the patch carries with it a specific vector of weights
+that represents the archtypal vector.  The input contains vectors of
+input-channel dimension, and as the filter passes over the input, the weights
+vector in each filter cell is dot-product'ed with the input.  The resulting
+scalar value is a measure of:
+
+1. the length of the input vector
+2. how closely the direction of the input vector matches the weights vector
+
+Note that the length of the weights vector is not important in discerning
+patterns, since it remains constant over the course of inference.
+
+One might think of individual entities as inhabiting surface regions on the
+unit hypersphere, and perhaps the probability of their presence as the norm of
+the embedding.
+
+Once all dot products are computed, they are summed, to give a scalar value
+representing the "strength of presence" of the particular pattern.  Thinking of
+many of these patterns as "basis patterns", one can imagine being able to
+detect a large number of patterns by expressing them as combinations of basis
+patterns.
+
+SUMMARY
+
+So, to summarize, a convolutional filter is a set of N (# output channels)
+patterns, each one being a spatial grid of ideal subpatterns.  Each subpattern
+is itself expressed as a distributed representation.  And, the N patterns form
+a sort of set of "basis patterns", which when combined, express a large set of
+patterns in distributed fashion.
+
+Combining a single pattern with input gives a scalar value indicating how
+strongly the input resembles the archtypal pattern that is expressed in the
+weights. 
+
+A CONVOLUTIONAL FILTER DEFINES PATTERNS WITH FIXED SCALE AND FIXED SPATIAL
+ARRANGEMENT OF SUBPATTERNS
+
+It is important to realize the limitations of a convolutional filter.  First,
+it is not scale invariant.  If an image is scaled, the embedded representation
+of a filter changes completely, and there is no relation between the embedding.
+
+Secondly, a pattern, which recognizes particular subpatterns at each position
+in the grid, cannot recognize any variation in the spatial arrangement of these
+sub-patterns.
+
+
+THE ROLE OF POOLING
+
+So, a slightly misplaced eyeball (or wheel, or other sub-entity within an
+entity) will thus fail to activate the appropriate sub-pattern at the expected
+location in the filter, and thus it will be as if it isn't there at all.   The
+idea of pooling is a filter that can be seen as a family of coordinated filters
+that are in winner-take-all competition with each other.  Each filter
+represents a specific pattern, which, typical of ordinary filters, means that
+each subpattern must occur at an exact location within the patch.  But, now, we
+have a combinatorial family of filters, constructed by considering the
+combination of P distinct sub-positions of each subpattern.  Thus, logically,
+there are P^G distinct filters (G = # of grid elements), and the score given by
+the best matching one will be propagated forward.
+
+I *think* what the max pool operation does is just report the maximal value of
+the dot-product.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
