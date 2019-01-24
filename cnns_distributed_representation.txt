@@ -70,9 +70,63 @@ combination of P distinct sub-positions of each subpattern.  Thus, logically,
 there are P^G distinct filters (G = # of grid elements), and the score given by
 the best matching one will be propagated forward.
 
-I *think* what the max pool operation does is just report the maximal value of
-the dot-product.
+But...I just did this experiment and it looks like max pooling is done
+channel-wise, which destroys any information about embedding relationships.  In
+the code below, there are three channels, and a field of size 4 over which the
+pooling is happening.  You can see that the first channel receives its value
+from the third cell, the second channel from the first cell, and the third
+channel from the second cell.  
 
+
+>>> m = nn.MaxPool1d(4, stride=1)
+>>> input = torch.randn(1, 3, 4)
+>>> input
+tensor([[[-0.0727, -0.9561,  1.0411,  0.0589],
+         [ 1.4134,  1.3270, -0.5751, -0.2381],
+         [-0.1564,  0.3408, -1.5731, -1.2075]]])
+>>> output = m(input)
+>>> output
+tensor([[[1.0411],
+         [1.4134],
+         [0.3408]]])
+
+What I had thought would make a lot more sense would be the notion that the
+convolutional filter is "looking" for the single best-fitting feature in a
+limited region within its overall receptive field.  Best-fitting means it takes
+O (# output channels) dot products with each of the competing input cells.  It
+has then computed an embedding vector.
+
+ROUTING CONFIGURATION
+
+Max pooling can be seen as a form of routing, if we adopt the following
+definition of routing:
+
+During inference, incoming neuronal weights are fixed, and so, a neuron's input
+at a particular moment varies only with the activations of its source neurons.
+This is fixed routing, because the information of their activations is flowing
+in a fixed pattern.  With dynamic routing, there is an activity-dependent
+weighting which censors certain communication lines.
+
+With Hinton's capsules, routing is accomplished through b_ij values, which are
+iteratively updated.  In max pooling, a single O(N) search for the maximum
+activation value results in setting all but one weight to zero.
+
+So, let's define the notion of a "routing coefficient" as the weight applied to
+a particular neuron-to-neuron connection, calculated dynamically from activations
+at a particular moment.  Then, a routing configuration consists of the values of
+all routing coefficients.
+
+Now, the question is, can we design a convolutional filter mechanism that
+efficiently computes the logically "best" encoding, among the P^G different
+routing configurations?
+
+If there were only one output channel, then the max-conv output would be a
+single scalar, and we would simply search for the configuration with the
+largest scalar value.  Since this scalar is just a sum of dot products, the
+routing configuration is decomposable and would just be sum(max_p(cell_j)).
+But, if we wanted to maximize the norm of the encoding vector (supposing that
+we interpret the encoding norm as the probability of presence of this feature)
+then, we cannot decompose it like this.
 
 
 

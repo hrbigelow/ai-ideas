@@ -1,0 +1,25 @@
+COMPARISON OF GLOBAL MAX-CONV POOLING AND CAPSULE ROUTING
+
+In cnns_distributed_representation.txt, I describe the goal of max-conv
+pooling, and show that it is a hard routing problem to solve.  There are P^G (P
+= # units in a competition group, G = # higher-level filter grids) possible
+routing configurations, and the problem doesn't seem to be factorizable among
+the individual competition groups, if we are trying to optimize the output
+vector norm.  
+
+Now, I would like to compare this problem with that of Capsules.  In a max-conv
+unit, the convolutional filter has G units, and each unit has P competing
+inputs.  There are P*G routing coefficients (G will be set to 1, the rest to
+0, in a valid configuration).
+
+So, the max pooling expands the filter's capacity to recognize a larger set of
+variations of a basic pattern, in which each element has some local wiggle
+room.  This makes sense if we think about faces - faces all have different
+proportions and positions between eyes, nose, mouth and ears, even if you
+adjust for the overall size.
+
+Is this sort of variation accounted for by Capsules?  It seems that it is
+solved kind of by the gaussians.
+
+
+

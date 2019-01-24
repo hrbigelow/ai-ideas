@@ -1,0 +1,96 @@
+HOW COULD ROUTING WORK IN THE VISUAL SYSTEM?
+
+Let's assume that the visual system is composed of layers arrayed in 2D, and
+that a cell in each layer has a limited receptive field.  The lowest layer
+(rods and cones) cells each are explicitly mapped to a precise 2D location in
+the visual field due to their physical position in the retina.  By virtue of
+local connectivity, the next layer's cells have what is called a "receptive
+field", which consists of a roughly rectangular local patch of area in the
+visual field that affects its input.
+
+This is true all the way to the top.  The connectivity patterns are fixed, but
+the strengths of the weights may change.  The patterns of excitation cascade up
+through the synapses.  This model can be interpreted as building complex
+features from simple features.
+
+We assert that the visual system achieves an encoding from a raw visual signal
+that has both invariant and equivariant components.  We try to derive a system by
+starting with the simplest case, pointing out shortcomings, and then introducing
+solutions to these shortcomings.
+
+A FEATURE IS EXPRESSED BY A SINGLE NEURON AND ITS INCOMING WEIGHTS
+
+A visual feature is a pattern of colors in particular locations, (or light and
+dark spots, if in black and white).  It can be thought of as a point in the
+space of small images, such as a 3x3 image patch.  A simple neuron can be
+trained to be an "address decoder" for such a point, and its bias adjusted so
+that it responds to any pattern within a certain radius of the addressed
+pattern.
+
+So, this single neuron will fire with some strength.  By itself, it can
+indicate simply whether a particular pattern is present or absent in its visual
+field.
+
+ONE-TO-ONE FEATURE REPRESENTATION ISN'T SCALABLE TO MANY FEATURES
+
+If there are thousands of distinct patterns that must be discerned one from
+another, the single-neuron model of feature detection isn't scalable, as it
+would require one additional neuron for each new pattern and in each location
+in the visual field, and the visual system has only a fixed number of neurons.
+
+The solution seems to be to provide a fixed number of neurons for each
+location, and to represent the many patterns in a distributed way.  Each neuron
+represents a "basis pattern", and the thousands of different patterns are
+composed as linear combinations of these basis patterns. 
+
+So, now, the combination of firings of neurons for a particular 2D location
+identifies the pattern among many thousands of patterns.
+
+ASIDE: WHAT IS ROUTING?
+
+In this note, the term "routing" has a very specific definition.  Before giving
+it, note that there are two types of values in a network:  synaptic strengths,
+which remain largely constant at inference type, and change on a slow time
+scale, and neural activations, which change on a fast time scale and constitute
+the information being processed.
+
+From the perspective of a single neuron, it receives information from just the
+subset of neurons connected to it upstream.  On the quick inference-time time
+scale, the only thing that determines the activation of this neuron are the set
+of activations of those neurons connected to it.
+
+However, one could introduce inhibitory neurons that modulate the transmission
+of signals from specific upstream neurons.  This set of inhibitory neurons
+could serve as a component-wise mask at inference time.  It would serve the
+same effect as zeroing out some of the synapses, but it wouldn't affect the
+synaptic strengths, and it would happen at the short time scale.
+
+From the perspective of the receiving neuron, this could look like "attention".
+Now, if an upstream neuron connected to more than one recipient (i.e. if two or
+more recipient neurons had overlapping receptive fields) then, this dynamic
+filtering could look like "routing" in the traditional sense of "choosing a
+route".  
+
+It is known that receptive fields of neighboring neurons do indeed overlap, and
+that there is lateral inhibition.  It is at least plausible that an upstream
+neuron experiences something like a dynamic routing of its outputs.
+
+WHAT PURPOSE COULD ROUTING SERVE?
+
+Taking the perspective of the upstream neuron, what purpose could routing serve?
+If this neuron is carrying a signal that represents presence of a particular pattern,
+then, there may be some competition among the receipient neurons for its output.
+If its output is only communicated to one among the group of recipient neurons, it
+means that there is competition among the upstream feature detectors which one
+needs it the most.
+
+This seems quite plausible as a local feedback phenomenon.  A group of
+recipient neurons initially receive excitatory input from upstream.  One among
+those recipient neurons is getting the most excitation, due to its unique set
+of inputs (although overlapping from the ones below) and it sends a laterally
+inhibitory signal proportional to its excitation level.  (!!!)
+
+I think I get it!
+
+
+
