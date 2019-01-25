@@ -1,0 +1,19 @@
+NEURONS WITH OVERLAPPING RECEPTIVE FIELDS
+
+Consider a pair of neurons with overlapping receptive fields.  The fields may
+completely or partially overlap.  These two neurons could either be in
+competition with each other, such that each laterally inhibits the other, or
+they may not be.
+
+In the case when they are mutually laterally inhibitory, we could interpret
+them as competing explanations of a pattern's presence in the receptive field.
+There is just one pattern after all, so it should be accounted for by only one
+neuron.
+
+On the other hand, if the two neurons are not in competition with eachother,
+then we could take a broader interpretation of their firing strengths.  Each is
+optimized to detect a particular pattern, but will fire in response to patterns
+nearby it in pattern space.  This allows the pair of neurons to express a
+larger family of patterns.
+
+
