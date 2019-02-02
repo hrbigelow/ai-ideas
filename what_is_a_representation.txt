@@ -1,0 +1,166 @@
+WHAT IS BEING REPRESENTED, AND WHAT IS A REPRESENTATION?
+
+Usually, the thing being represented is an object in a high dimensional space,
+such as an image.  So, one speaks of a "representation" of an individual object
+as the specific point in the latent space that corresponds to the point in
+ambient space.  Another use of the term is to refer to the entire function (and
+its properties) that defines the mapping from ambient to latent space.
+
+Since the latent space is smaller dimensional, and other structure is assumed,
+there is a loss of information from an ambient data point when it is mapped to
+a latent data point.  One interpretation is that this information is variation
+that is not of interest to the task at hand, either because it is not relevant
+to that task or because it is noise (i.e. not relevant to *any* task).
+
+One way to visualize this throwing away of variation is to imagine that the
+mapping from ambient to latent implicitly learns a manifold, which can be
+visualized as a windy object of lower dimension embedded in the ambient space
+(i.e a piece of string or a surface embedded in 3D), and to visualize the data
+points, which are near it but not on it, as being collapsed to the nearest
+point on the manifold.  This collapsing is what is throwing out the extra
+variation.  Then, the coordinates within the manifold constitute the
+representation.
+
+In order to have a large volume, the manifold not only needs to have enough
+dimensions, but they need to be able to be used roughly independently.  At one 
+extreme, if each dimension were used mutually exclusively, the volume would
+simply be the sum of subvolumes of each dimension.  At the other, the volume
+is the product of them.  This needs a bit of clarification though.
+
+In seemingly all real applications, input data values fall within pre-defined
+bounds.  For instance, RGB values are bounded in [0, 256], waveform amplitude
+values are in a certain range, text has a pre-defined set of words and symbols,
+a genome sequence is built from a predefined set of symbols, etc.  Without loss
+of generality, assume that each dimension of the ambient space is bounded in
+[0, 1].
+
+If we also assume a finite number of values in [0, 1] that can occur in each
+dimension, then the degree of correlation between dimensions in latent space
+determines the total number of possible points in the manifold.
+
+Yet, the total number of patterns that could be expressed in distributed
+fashion would be more than sufficient for most purposes, even if there were
+very high correlation among its components.  So, "representational power" is
+just one concern in a representation.
+
+CONVOLUTIONAL NETWORK LAYERS, CONVOLUTION VALUES, AND FILTERS
+
+One can view the layer of activations of a convolutional network in two
+aspects.  First, vertically, there are N channels, and the way I interpret them
+is as a distributed representation of patterns.  Horizontally (along the
+dimensions of the image) we see something like a Markov Random Field.
+Neighbors are correlated with each other due to overlapping receptive fields,
+and also the statistical structure of images themselves.  One could thus view
+the activations as an over-representation.
+
+So, first consider the correlation between two convolutions using the same
+filter, and neighboring positions.  Since these two values derive from
+overlapping information, they are bound to be correlated.  Taken together, the
+x-y field of convolutional values from one filter are like an MRF, and could be
+seen as an overparameterized encoding of the input.  Another way to view it is
+as an ensemble of N separate representations which each differ by an offset.
+Having all of them is necessary to overcome edge effects, but NOT having some
+form of mutual exclusivity seems incorrect from a Bayesian point of view.
+
+But, it is also strange, because it seems possible also to conceive of the
+combination of results to be useful as a distributed representation.  For
+instance, in order to detect pairs of vertical lines of N different spacings
+(where the spacing fits within one filter), one might design N filters.  But,
+one could also just have a single filter that detects the sides of a single
+vertical line, and doesn't care about anything else.  Then, the pattern of
+activations of this filter at specific positions would allow expressing this
+pattern just with these filters.
+
+One important thing to consider here is, what is the relationship between the
+*amount* of receptive field overlap and the radius of competition?
+
+Or, should the filter just be able to learn on its own, so that the proper
+exclusivity naturally occurs due to the patterns learned and the data itself? 
+
+PRACTICAL ASPECTS OF FEATURE POOLING
+
+Even if certain features are detected mutually exclusively within a certain
+spatial neighborhood, (either due to the pattern of data and learned filters,
+or the explicit enforcement of mutual exclusivity through lateral inhibition)
+there is still a practical need to reduce the total number of patterns
+detected.  If we consider a higher level feature layer in a conv net, and
+assume there has been no pooling, and all convolutions have had strides of 1,
+then we have essentially the same number of nodes in the higher layers as we
+have pixels in the input.  The difference is that the activations in this layer
+represent the occurrence of high-level features (eyes, ears, wheels, etc) Their
+precise x-y spatial coordinates in the image have been retained (thanks to no
+feature pooling, and stride of 1).  So, we have a combinatorially large number
+of possible patterns, just considering the combinations of subtle x-y positions
+of multiple features (i.e. say 100 possible positions of each of 10 features)
+
+Hinton casts this combinatorial problem explicitly as gaussian, I think.  It's
+not totally clear to me but I think that is what's going on.  
+
+The solution of max pooling is simply to throw out the extra information.  It is
+a crude method of dimensionality reduction that just naively folds a large class of
+different patterns all to the same pattern.
+
+Taking the example of faces, for instance, first of all, what information about
+the many proportions and arrangements of faces do we want to learn?  A human
+will accumulate some form of memory as to how many different aspects of
+proportions are usual or unusual.  This could, for example, be represented as a
+multivariate gaussian of the combination of relative x-y positions of eyes,
+ears, nose, mouth over many thousands of seen faces.  Is this distribution
+actually being learned?  If so, where?
+
+Obviously, if this is being learned, it must use the full, pixel-level spatial
+resolution (or sub-pixel level) available to it.  Well, not completely...it
+could throw out information, but it would still need to learn which remaining
+reduced-resolution patterns are plausible faces and which are not.  So, it
+seems like max-pooling is just kicking the can down the road.  It eases the
+burden, but doesn't avoid the problem itself.   It seems a better solution would
+be one that works efficiently at any resolution.
+
+WHAT DOES THE BRAIN DO WHEN IT RECOGNIZES A FACE, OR JUDGES A FACE AS UNUSUAL?
+
+Over one's lifetime, a person accumulates a lot of visual knowledge of human
+faces.  This means he will be able to explicitly recognize individual faces,
+but also make qualitative judgments about individual faces.  For instance,
+"that person has disproportionally big ears", or "that face is really beautiful
+/ unusual / ugly / masculine / feminine"  All of these judgments imply a few
+things.  First is that we must form memories associating the precise
+combination of proportions of a person's face to their name and identity.
+Further though, we must also aggregate that information implicitly in some way,
+so that we perceive how any aspects of a face fit within our collective
+experience of the distribution of that aspect of all other faces we've seen.
+
+It seems that any such aspect, and its semantic associations, can be stored in
+an associative memory.  It is not quite clear how one gets from a collection of
+these associative memories to a "collective sense" of unusualness, though.
+
+In order for this to be achieved, it has to be somehow recognized that the
+aspects are on a continuous scale to begin with.  It also doesn't seem as
+though explicit memories are being called up when one makes qualitative
+judgments about a thing.  Is it possible that something like an SDM could be
+mediating this, or is it unlikely?
+
+DOES SDM MEDIATE COLLECTIVE MEMORY?
+
+Is there a hard conceptual difference between explicit memories and implicit?
+Could they be two poles of the same phenomenon?  How might one even define what
+is meant by "explicit" or "implicit" memory?
+
+An attempt at a definition might be the following (taking from the face example)
+
+Explicit:  That's Ruby!
+Implicit:  That looks like a typical brainy asian chick
+
+The explicit memory takes the visual cue and retrieves a very specific
+association to a particular person.  It is only triggered by Ruby's face,
+specifically.  In contrast, the implicit memory could have been triggered by
+any number of other faces.  It is a much broader type of memory.
+
+It seems like one possible explanation for this phenomenon is that what is
+being stored when it comes to an implicit memory is just a different
+representation, one that is more highly invariant to lots of aspects.
+But, what associated information would be stored with this representation?  
+
+WHAT SORTS OF INFORMATION IS STORED FROM VISUAL EXPERIENCE?
+
+
+ 

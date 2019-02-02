@@ -1,0 +1,54 @@
+DISTRIBUTED REPRESENTATION VS COMPETITION OF EXPLANATION
+
+NEED FOR DISTRIBUTED REPRESENTATION IS COMPELLING
+
+In a very general sense, the notion of using a distributed strategy to
+represent many different entities seems very compelling.  The idea is that a
+small number of neurons can represent a combinatorially large number of
+distinct features or entities.
+
+EXISTENCE OF DISTRIBUTED REPRESENTATION IMPLIES COOPERATIVE GROUP OF NEURONS
+
+A neuronal implementation of a distributed representation implies the existence
+of a small group of neurons that cooperate to represent many different
+features.  For any given input, these neurons all represent some aspect of it.
+This implies their receptive fields are all highly overlapping - otherwise,
+they wouldn't have access to the same information from the underlying feature,
+and thus wouldn't be able to cooperate.
+
+As an aside, during learning, each of these neurons in the group are in some
+sense competing for a separate niche to represent the set of patterns
+encountered.  It is no use for two neurons in this group to do the same thing -
+they must diversify.
+
+SHOULD EACH FEATURE BELONG EXCLUSIVELY TO A SINGLE PARENT FEATURE?
+
+A given entity can occur in any xy pixel position in the input.  Therefore,
+neurons in a given layer must occur at a sufficient spatial density to detect
+this.  This means that two neighboring neurons in a layer will have largely
+overlapping receptive fields.  This means further that one neuron's detection
+affects the plausibility of another one detecting the same thing.  It's not
+clear whether the proper thing to do is to enforce a winner-take-all approach
+to neighboring neurons, or to allow them to share the representational burdon. 
+
+In a probabilistic interpretation, a strong detection of one feature by a
+neuron may or may not logically contradict the presence of another feature that
+overlaps it.  It depends on the identity of the features being detected.
+But, it may be that 
+
+
+IS A HIERARCHICAL FEATURE REPRESENTATION NECESSARY?
+
+It seems to make intuitive sense, from the reductionist perspective, to
+represent complex entities as distinct compositions of simpler entities,
+recursively, down to indivisible base patterns.  But, this is a pretty rigid
+interpretation, because it is not clear that there is any non-ambiguous way to
+divide patterns hierarchically.
+
+LATERAL INHIBITION SEEMS TO HAVE A COMPELLING INTERPRETATION AS 
+
+
+This problem is somewhat orthogonal to the notion of invariance and equivariance, 
+and let's put that aside for now.
+
+

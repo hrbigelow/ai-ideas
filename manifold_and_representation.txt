@@ -1,0 +1,28 @@
+WHAT IS A MANIFOLD, WHAT IS A GOOD REPRESENTATION?
+
+I'm trying to answer a few interrelated questions.  First is, what is a
+manifold?  The basic definition is something like:
+
+
+The easiest, to me, way of conceptualizing manifolds is to imagine two or more
+clouds of points in a high-dimensional latent space, and that each of these clouds
+hovers around a different hyperplane.  The hyperplanes may intersect, but the extent
+of the clouds are finite.
+
+"A low-dimensional sub-volume of an ambient space in which the data
+concentrates". 
+
+This definition isn't meaningful unless you assume some additional constraints
+on the shape or continuity of the sub-volume.  For example, how many dimensions
+are appropriate?  And how smooth should the manifold be?  One can always
+construct a continuous one-dimensional volume that goes through every data
+point.  It will be extremely windy, and obviously would be an example of
+extreme overfitting, by the criterion of expected distance from any new data.
+
+Another question is, supposing you "like" the number of dimensions and overall
+windiness of your manifold, is it necessary that every data point actually be
+contained by it?  Or just that your data are "near" it?
+
+In illustrations of manifolds in the Deep Learning text, it seems like a 
+
+

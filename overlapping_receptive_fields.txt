@@ -10,10 +10,28 @@ them as competing explanations of a pattern's presence in the receptive field.
 There is just one pattern after all, so it should be accounted for by only one
 neuron.
 
-On the other hand, if the two neurons are not in competition with eachother,
+On the other hand, if the two neurons are not in competition with each other,
 then we could take a broader interpretation of their firing strengths.  Each is
 optimized to detect a particular pattern, but will fire in response to patterns
 nearby it in pattern space.  This allows the pair of neurons to express a
 larger family of patterns.
+
+IS THERE BENEFIT TO HAVING MULTIPLE INPUT OR OUTPUT CHANNELS?
+
+It's unclear to me how a convolution with multiple input and output channels is
+computed.  First, consider a filter with one input and one output channel.  The
+computed value is just the dot-product of filter weights with input weights,
+plus a single bias term added.  Thus, it is an affine transformation of the
+input, and can be implemented with a single perceptron.
+
+Now, consider a convolution with multiple input channels but one output
+channel.  This is NOT (I don't think) implemented as the sum of multiple
+independent individual W x H x 1 x 1 filter applications.  In particular, I
+think it only allows for a single bias term.  Also, I'm not sure whether a
+nonlinear activation function is applied *before* the summing or not.
+
+Extending this to multiple output channels though, is easy, since they are
+independent calculations.  Each calculation only shares input, nothing else.
+
 
 
