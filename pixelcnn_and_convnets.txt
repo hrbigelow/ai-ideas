@@ -1,3 +1,35 @@
 PROBABILITY INTERPRETATION OF CONVOLUTIONAL NETWORKS
 
-How does PixelCNN work?
+How does PixelCNN work?  In particular, how do you understand the connection
+between a regular Convolutional Network that is, for example, trained to output
+an image class with a model that explicitly models a joint probability of an
+image, and can be conditioned by some vector?
+
+In the case of PixelCNN, the stack of convolutions is learning a probabilistic
+relationship between a pattern of surrounding pixels and one pixel.  In the
+case of an ordinary CNN, the stack of convolutions (at one position) is
+learning a vector which is used in the FC layer for computing the
+classification task.
+
+In some sense, the supervised learning algorithm is learning the relationship
+between a set of features that are extracted through a convolutional stack, and
+a final image embedding.  That same image embedding is likely the same kind of
+information that would be used to condition PixelCNN.
+
+But, the approach is very different.  In PixelCNN, the convolutional stack is
+learning a conditional probability distribution - the condition is the values
+of previous pixels, and also the overall image embedding vector.
+
+It is odd because PixelCNN seems it can be used both to somehow find the ML
+setting of the conditioning vector for a given image, but also to sample an
+image from the joint distribution (after being conditioned on the embedding
+vector)  Either way, the convolutional stack includes within it, a learned
+relationship between pixel-level detail and an embedding vector.
+
+The regular CNN is not as readily interpreted probabilistically.  One could try
+to see the convolutional stack as modeling a conditional distribution
+P(feature_component|pixels) but, since there is no strict autoregressive
+masking, there isn't a "probabilistically consistent" interpretation.
+
+But, I don't quite understand, first of all, how an autoregressive model would
+be graphed out. 

@@ -1,0 +1,133 @@
+NOTES ON WAVENET AUTOENCODER PAPER (Chorowski, January 2019)
+
+Conceptual difficulty: an autoencoder produces a bottleneck that forces the
+representation to throw out "noise" while retaining the ability to reconstruct
+the input.
+
+Meanwhile, the goal of the paper is to learn a representation that factors out
+voice qualities like timbre, pitch, tempo from phoneme content.  There doesn't
+seem to be any constraint in the training regime that would encourage learning
+such a representation.
+
+The VQ-VAE uses a deterministic encoder procedure.  It seems like the first
+part of the encoding procedure is the same as in a VAE: a NN is used to compute
+parameters for a multivariate gaussian, and a sample is taken from that.  But,
+then, a quantization procedure selects the nearest (L2) "prototype vector" from
+a "maintained" set of K prototype vectors, and that is used as the latent
+representation.  To compute the gradient, the VQ-VAE uses something called a
+'straight-through estimator' for computing the gradient.  Also, the prototype
+vectors are trained using a "commitment loss".
+
+
+Importantly, they argue that if they assume a "uniform prior" over the K
+prototype vectors, then the KL-divergence is always equal to log K.  Instead it
+is a hyperparameter "tied to the size of the prototype inventory"  This seems a
+bit erroneous of an interpretation, because the notion of the KL divergence
+seems to me important to assume a *fixed* prior p(z).  In this case, the K
+prototype vectors are being trained.  However, I note that the commitment loss
+or other loss seems to take the place of KL divergence here as regularizer /
+bottleneck.
+
+(Must read [18] Neural Discrete Representation Learning)
+
+"A downside of autoregressive models is that they do not explicitly produce
+latent representations of the data"
+
+Why is this, and what does this statement mean?  Well, going back to basics,
+the autoregressive model learns a conditional probability distribution that is
+useful for computing p(x) (x is a sequence) and generating samples x ~ p(x)
+efficiently.  I don't really have experience with autoregressive models besides
+WaveNet and PixelCNN / PixelRNN.  But, with both of those, it seems that they
+need very rich local conditioning vectors to guide their production of anything
+useful.  And, the local conditioning information must be ultimately provided at
+the resolution of the input/output domain (each time step of a waveform, or
+each pixel of an image).
+
+
+Section II C: Latent space collapse: A phenomenon in which the decoder learns
+to ignore the representation and only uses the "unconstrained signal coming
+through the autoregressive path".
+
+This is confusing because, in my experience with WaveNet, it is incapable of
+producing anything but static without local conditioning vectors.  However, I
+do note that in that case, WaveNet is trained just to maximize probability of
+the data.  This objective is quite different than a MSE loss between the
+generated waveform and the input waveform.  But, frankly, I don't see how a
+simple autoregressive model could be made to achieve that.
+
+Section III: "Explicitly conditioning the decoder on speaker identity frees the
+encoder from having to capture speaker-dependent information in the latent
+representation".
+
+Yes, this is true.  But, does it actively drive the encoder to produce a
+speaker-independent representation?  I can think of a justification for that,
+but not sure...
+
+Page 4 first PP: "...and latent information about *past and future* samples extracted
+by the encoder"
+
+This is confusing.  They say they are using traditional WaveNet as the decoder,
+but the decoder doesn't use future samples (unless they mean the small window
+of future samples that will be used in the upsampling process to generate
+per-time-step conditioning vectors)
+
+IDEA FOR VARIABLE-DURATION FEATURE EXTRACTION
+
+The LSTM-based sequence transformer has an output gate that can decide whether
+or not to output something at a given timestep.  Is it possible that one could
+be trained to learn *when* to output something, based on seeing a complete
+pattern of, say, a phoneme in a waveform?
+
+See p. 5 top for WaveNet architecture.
+
+Section IV E 2: Input representation:  We then replaced the waveform with a
+customary ASR pipeline: 80 log-mel filterbank features extracted every 10 ms
+from 25ms-long windows and 13 MFCC features extracted from the mel-filterbank
+output, both augmented with their first and second temporal derivatives.
+
+From https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html
+
+
+
+
+MODEL CONSTRUCTION
+
+Encoder (Section IV A)
+
+Waveform
+MFCC + d + a (100 Hz) (see IV: E 2: Input representation)
+Conv(3, 1, 768) + Residual  (3 frame rf, )
+Conv(3, 1, 768) + Residual  (5 frame rf)
+Conv(4, 2, 768)             (8 frame rf)
+Conv(3, 1, 768) + Residual  (12 frame rf)
+Conv(3, 1, 768) + Residual  (16 frame rf) (confirmed in text)
+FC(ReLU, 768, 768) + Residual
+FC(ReLU, 768, 768) + Residual
+FC(ReLU, 768, 768) + Residual
+FC(ReLU, 768, 768) + Residual
+
+
+Bottlenecks
+
+VQ-VAE
+Linear(768, 64)
+VQ  (select nearest prototype vector)
+
+VAE
+Linear(768, 128)
+Mu + Sigma
+Sample
+
+AE
+Linear(768, 64)
+
+
+Decoder
+
+GatedResidualConv(
+
+
+
+
+
+

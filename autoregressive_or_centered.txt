@@ -1,0 +1,71 @@
+AUTOREGRESSIVE VS CENTERED FACTORIZATION?
+
+Suppose we want to approximate a joint probability of sequential data P(x_1,
+..., x_n) with some independence assumptions, leading to the graphical model
+x_1 -- x_2 -- ... -- x_n.  Suppose we know that P(x_(i+1) | x_i) are the same
+for i in (1, n-1).  Then, we can factorize this JPD as:
+
+P(x_1) prod_i { P(x_(i+1)) | P(x_i) }
+
+Note that the conditional distribution models the relationship between
+neighboring pixels - we might estimate this relationship from data, and it
+could easily be symmetric.  If that's the case, we could just as easily model
+it as P(x_i | x_(i+1)) and factorize it as:
+
+P(x_n) prod_i { P(x_i | P(x_(i-1)) }
+
+This factorization allows us to do two things.  First, it allows calculating
+the joint probability of a given sequence.  Second, it allows to sample from
+the distribution non-iteratively.
+
+It is also possible to model the distribution in a "bidirectional" way, so that
+we model the neighbor relationship as P(x_i | x_(i-1), x_(i+1)).  However, note
+that, if indeed x_(i-1) c.i. x_(i+1) | x_i, then does this mean it factorizes
+somehow?
+
+
+ANSWER
+
+For a 2nd-order Markov chain:
+
+A--C--E--G
+ \ /\ /\ /
+  B--D--F
+
+There are four maximal cliques, each of size 3.  The UDG implies a number of
+conditional independence assumptions.  The Hammersley-Clifford Theorem states
+that any probability distribution that exhibits these conditional independence
+properties implied by the graph can be expressed as the product of non-negative
+potentials, one for each maximal clique.
+
+From Wikipedia:
+
+The Hammersley–Clifford theorem implies that any probability measure that
+satisfies a Markov property is a Gibbs measure for an appropriate choice of
+(locally defined) energy function.
+
+Since the mathematics of probability distributions in systems of interacting
+particles is worked out in physics, and concerns configurations of different
+energy states, models such as Boltzmann machines, Hopfield networks, Ising
+models, that exhibit Markov properties and model probablity distributions like
+this are termed "Energy-based models".
+
+So, what this means is that the factorization:
+
+P(B|A,C)P(C|B,D)P(D|C,E)P(E|D,F)P(F|E,G)
+
+obeys Hammersley Clifford, and thus exhibits the conditional independence
+assumptions, just as the more traditional factorization.
+
+The problem is that this factorization may not be normalized, and it may be
+difficult to calculate the normalization constant.  (But, who knows, maybe it
+IS normalized - I can't tell).  
+
+My own thought is that, intuitively, conditioning with a centered context,
+P(B|A,C), as opposed to a one-sided context, P(C|A,B), will lead to a lower
+entropy distribution.  And, my second hunch is that a factorization built on
+lower entropy distributions should in general be closer to the true
+distribution - in the sense that it will maximize the joint probability of all
+seen data.
+
+
