@@ -94,17 +94,80 @@ MODEL CONSTRUCTION
 
 Encoder (Section IV A)
 
-Waveform
-MFCC + d + a (100 Hz) (see IV: E 2: Input representation)
-Conv(3, 1, 768) + Residual  (3 frame rf, )
-Conv(3, 1, 768) + Residual  (5 frame rf)
-Conv(4, 2, 768)             (8 frame rf)
-Conv(3, 1, 768) + Residual  (12 frame rf)
-Conv(3, 1, 768) + Residual  (16 frame rf) (confirmed in text)
+Waveform (16 steps / ms)
+MFCC + d + a (every 160 steps or 10 ms) (see IV: E 2: Input representation)
+Conv(3, 1, 39, 768) + Residual  (3 frame rf)
+Conv(3, 1, 768, 768) + Residual  (5 frame rf)
+Conv(4, 2, 768, 768)             (8 frame rf)
+Conv(3, 1, 768, 768) + Residual  (12 frame rf)
+Conv(3, 1, 768, 768) + Residual  (16 frame rf) (confirmed in text)
 FC(ReLU, 768, 768) + Residual
 FC(ReLU, 768, 768) + Residual
 FC(ReLU, 768, 768) + Residual
 FC(ReLU, 768, 768) + Residual
+
+"The resulting latent vectors were extracted at 50 Hz (i.e. every second frame),
+with each latent vector depending on a receptive field of 16 input frames."
+
+Here, a "frame" is a 39D derivative-augmented MFCC coefficient set.  
+
+I believe that what they call a 'feedforward' layer is just a size-one convolution.
+
+
+OVERALL TRAINING PROCEDURE
+
+How is the autoencoder trained?  The encoder receives a MFCCda vector,
+converting it into a sequence of feature vectors at a fixed down-sampling ratio
+(1/2).  Each element in this sequence is passed through one of the bottlenecks,
+which outputs a same-length sequence of smaller feature vectors.  These are
+then jittered, convoluted, and upsampled to the time-domain frequency using a
+deconvolution.  The one-hot speaker ID vector is concatenated to every time
+step.
+
+At this point, classical WaveNet is run.  I believe it must be run in teacher
+forcing mode, in which the correct amplitude is fed at every timestep, and the
+loss is calculated as the cross-entropy between the outputted softmax and the
+quantized one-hot amplitude at the next timestep.
+
+This accounts for the WaveNet parameters, but how does the Encoder get trained?
+From the perspective of WaveNet, training must be even more complex than with
+fixed data, because, each time WaveNet sees the same waveform, it will be
+receiving a different set of local conditioning vectors.
+
+From the perspective of the Encoder, all we really need to train it is a gradient
+of the loss with respect to each component of the embedding vectors, and all
+of that is available.
+
+The logic of batching seems to follow the same pattern as with WaveNet.
+Namely, the individual training datum is a single waveform and a single
+timestep.  Batching across samples, and batching for a window of timesteps
+are both valid.
+
+The issue with autoregressive state is still present.  It is a consequence of
+the fact that the prediction for each timestep depends on a window of N
+previous timesteps.  This means that at each layer in WaveNet, any two
+consecutive timestep predictions will share R-1 convolution results.  The
+earlier timestep lacks exactly one convolutional result (the newest), and the
+later timestep will not use the oldest convolutional result of the earlier
+timestep.  Besides these, both timesteps share R-1 convolutional results at
+each layer.  These should be re-used.
+
+
+During training, we are using teacher forcing, which breaks the dependence
+between timesteps.  So, we can batch a window of timesteps as well as samples.
+This then has a few parts to it.  First is the exponential sawtooth shaped set
+of left-ward back buffers, defined as the receptive fields of a single
+convolution at time 0 for each layer.  Having these values populated at each
+layer allows unpadded convolutions to be carried out layer by layer, and
+correctly resume the calculation.
+
+Another thing is that the bottleneck only needs to be run during training, and
+so we can write it to batch a set of samples across time steps.
+
+But, we can just use a reparameterization trick to achieve a set of random samples
+from different 
+
+
 
 
 Bottlenecks
@@ -125,6 +188,7 @@ Linear(768, 64)
 Decoder
 
 GatedResidualConv(
+
 
 
 

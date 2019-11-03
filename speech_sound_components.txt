@@ -1,0 +1,60 @@
+A SCHEME FOR SEGMENTING SPEECH AUDIO
+
+The scheme is very simple.  It consists of a set of static points, and
+transitions between those points.  For instance, say the word "just".  It
+can be broken into six distinct segments:
+
+1.  The voiced sound in which no air escapes from the nose or mouth, but the
+vocal chords are moving.  This is a very brief segment.  During it, the volume
+of air that has passed through the vocal chords has nowhere to go, and fills
+up.  If you try to extend this segment, the volume behind your tongue will feel
+full.
+
+2.  The sound which is a voiced "shhhh".  It consists of the vocal sound
+combined with the sound of air passing through the small opening between the
+tongue and roof of mouth
+
+3.  The voiced "uhhhh" sound.  It has its distinct timbre (like all vowels) due
+to the shape of the vocal cavity.
+
+4.  The unvoiced "sssss" sound.  It has its distinct timbre from the shape of
+the passageway between the tongue and roof of mouth, different from the "sh"
+sound.
+
+5.  Silence.  This occurs as the tongue touches the roof of mouth.  It may be
+that, like step 1, during this step there is still air passing through the
+unengaged vocal chords and pressure is building up behind the tongue.
+
+6.  The 't' sound.  This is the only sound that is hard to segment into a
+static sound.  The 't' sound is more characterized by its attack and rapid
+transition in the white noise as the tongue opens up.
+
+
+NOTES ON TRANSITIONS BETWEEN THESE STEPS
+
+3-4:  This transition must tightly coordinate the beginning of the white noise
+'sssss' part with the endint of the voice.  If the voice ends too early, there
+will be an extra 'hhhh' sound.  If it ends too late, an extra 'zzzz' sound,
+both of which will be noticible to the ear.
+
+
+POSSIBLE CONCLUSIONS
+
+If the majority or all spoken words are defined by these static points and
+their transitions, it seems to imply that the duration of the static points
+needs to be sufficient for the ear to identify them.  If they were too short,
+there would be no way to distinguish between alternatives.  For example, there
+is a lower limit in duration of step 3, "uhhhh" needed to distinguish between
+the words "just" and "gist".  At some lower bound, it would be theoretically
+impossible to tell.  Although, it is hard to demonstrate this to oneself merely
+by trying to pronounce it -- the physical limits of human speech production get
+in the way.
+
+However, one could imagine artificially synthesizing such an utterance, and
+shortening the duration until a human listener couldn't tell.  In any case,
+my suspicion is that each of these points has a lower limit below which a human
+listener cannot distinguish it from others.  Given this, it may be reasonable
+to conclude that the largest of these lower limits among all static points in a
+language (say, if it were 0.20 seconds), is the appropriate size of a receptive
+field for labeling these.
+
